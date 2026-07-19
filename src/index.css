@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+@theme {
+  --color-maroon: #8a004d;
+  --color-maroon-dark: #5e0035;
+  --color-maroon-light: #a80c61;
+  --color-gold: #e8b73e;
+  --color-gold-light: #f3d488;
+  --color-gold-dark: #b78a24;
+  --color-cream: #fffced;
+  --color-cream-dim: #f7f1dc;
+  --color-ink: #241a1f;
+
+  --font-serif: "Playfair Display", "Cormorant Garamond", serif;
+  --font-display: "Cormorant Garamond", "Playfair Display", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --animate-fade-up: fade-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-maroon-dark);
+}
+
+/* thin gold scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold);
+  border-radius: 999px;
+  border: 2px solid var(--color-cream);
+}
+
+.tracking-widest-lg {
+  letter-spacing: 0.32em;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Fine hairline rule used throughout as the site's quiet signature */
+.rule-gold {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold) 50%,
+    transparent
+  );
+}
+
+/* Atmospheric surfaces stand in for photography: layered gradients that read
+   as light falling across stone + gold leaf. Any /images/* file placed by the
+   client paints on top automatically and these layers simply recede behind it. */
+.surface-haram {
+  background-image:
+    radial-gradient(
+      ellipse at 30% 20%,
+      rgba(232, 183, 62, 0.35),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse at 80% 80%,
+      rgba(138, 0, 77, 0.55),
+      transparent 60%
+    ),
+    linear-gradient(160deg, #2c0019 0%, #5e0035 45%, #8a004d 100%);
+}
+
+.surface-warm {
+  background-image:
+    radial-gradient(
+      ellipse at 20% 30%,
+      rgba(232, 183, 62, 0.25),
+      transparent 55%
+    ),
+    linear-gradient(180deg, #fffced 0%, #f7ecc9 100%);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(120deg, #e8b73e, #fff3cf 45%, #b78a24);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
