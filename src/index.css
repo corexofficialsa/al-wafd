@@ -35,6 +35,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-anchor: none;
 }
 
 body {
@@ -43,6 +44,7 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-weight: 300;
+  overflow-anchor: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

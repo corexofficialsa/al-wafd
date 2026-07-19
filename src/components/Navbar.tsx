@@ -44,7 +44,7 @@ export default function Navbar() {
           className="flex items-center gap-3"
           onClick={() => setOpen(false)}
         >
-          <img src="/logo.png" alt="Al Wafd" className="h-9 w-9 md:h-10 md:w-10 object-contain" />
+          <img src="/logo.png" alt="Al Wafd" className="h-14 w-14 md:h-16 md:w-16 object-contain" />
           <span
             className={`font-serif text-2xl tracking-wide flex items-baseline gap-2 transition-colors duration-500 ${
               onDarkHero ? "text-cream" : "text-maroon"
