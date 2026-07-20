@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import ParallaxSurface from "../components/ParallaxSurface";
 import Reveal from "../components/Reveal";
 import OrnamentDivider from "../components/OrnamentDivider";
+import { PRESET_PACKAGES, formatSar } from "../lib/presets";
 
 const SERVICES = [
   { title: "Visa Processing", desc: "Full documentation, handled discreetly and in advance." },
@@ -11,12 +12,6 @@ const SERVICES = [
   { title: "Makkah Ziyara", desc: "Guided tours of the holy sites, paced and unhurried." },
   { title: "Madeena Accommodation", desc: "Stay within steps of Al-Masjid an-Nabawi." },
   { title: "Madeena Ziyara", desc: "A guided passage through the city of the Prophet ﷺ." },
-];
-
-const PRESETS = [
-  { name: "Economy", tag: "Modest & Sincere", desc: "The essentials, arranged with care and no excess." },
-  { name: "Comfort", tag: "Balanced & Refined", desc: "A comfortable middle path — 3-Star ease throughout." },
-  { name: "Elite 5-Star", tag: "The Full Delegation", desc: "Uncompromising 5-Star hospitality, start to end." },
 ];
 
 export default function Home() {
@@ -138,17 +133,20 @@ export default function Home() {
           </Reveal>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {PRESETS.map((p, i) => (
-              <Reveal key={p.name} delay={i * 0.1}>
+            {PRESET_PACKAGES.map((p, i) => (
+              <Reveal key={p.id} delay={i * 0.1}>
                 <Link
                   to="/packages"
-                  className="group block border border-maroon/15 p-10 h-full hover:border-gold transition-colors relative overflow-hidden"
+                  className="group block border border-maroon/15 pl-20 pr-6 py-10 sm:p-10 h-full hover:border-gold transition-colors relative overflow-hidden"
                 >
                   <div className="absolute inset-0 surface-warm opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="relative">
                     <p className="text-[11px] tracking-widest-lg uppercase text-gold-dark mb-3">{p.tag}</p>
-                    <h3 className="text-2xl font-serif text-maroon mb-4">{p.name}</h3>
-                    <p className="text-sm text-ink/55 font-light leading-relaxed mb-8">{p.desc}</p>
+                    <h3 className="text-2xl font-serif text-maroon mb-2">{p.name}</h3>
+                    <p className="text-sm font-serif text-gold-dark mb-4">
+                      From {formatSar(p.priceSar)} <span className="font-sans text-ink/40">/ person</span>
+                    </p>
+                    <p className="text-sm text-ink/55 font-light leading-relaxed mb-8">{p.blurb}</p>
                     <span className="text-xs tracking-widest-lg uppercase text-maroon group-hover:text-gold-dark transition-colors">
                       Explore &rarr;
                     </span>

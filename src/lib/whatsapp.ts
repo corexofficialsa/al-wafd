@@ -22,7 +22,7 @@ export const defaultSelection: CustomSelection = {
 
 const yn = (v: boolean) => (v ? "Yes" : "No");
 
-function buildWhatsappUrl(message: string): string {
+export function buildWhatsappUrl(message: string): string {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
@@ -40,14 +40,6 @@ export function customPackageMessage(s: CustomSelection): string {
 
 export function customPackageWhatsappUrl(s: CustomSelection): string {
   return buildWhatsappUrl(customPackageMessage(s));
-}
-
-export function presetPackageMessage(presetName: string): string {
-  return `Bismillah. Assalamu Alaikum Al Wafd Team, I am interested in booking your preset '${presetName}'. Please share the details and availability.`;
-}
-
-export function presetPackageWhatsappUrl(presetName: string): string {
-  return buildWhatsappUrl(presetPackageMessage(presetName));
 }
 
 export function generalEnquiryWhatsappUrl(): string {

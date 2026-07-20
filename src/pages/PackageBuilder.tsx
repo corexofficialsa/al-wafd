@@ -47,7 +47,7 @@ export default function PackageBuilder() {
       </section>
 
       <section className="pb-40 md:pb-48 px-6">
-        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-x-16">
+        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-x-16 pl-20 sm:pl-0">
           <Reveal className="md:col-span-2">
             <div className="border-b border-maroon/15 divide-y divide-maroon/10">
               <Toggle

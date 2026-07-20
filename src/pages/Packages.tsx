@@ -1,57 +1,7 @@
 import { Link } from "react-router-dom";
 import Reveal from "../components/Reveal";
 import OrnamentDivider from "../components/OrnamentDivider";
-import { presetPackageWhatsappUrl } from "../lib/whatsapp";
-
-interface Preset {
-  name: string;
-  tag: string;
-  desc: string;
-  features: string[];
-  featured?: boolean;
-}
-
-const PRESETS: Preset[] = [
-  {
-    name: "Economy Package",
-    tag: "Modest & Sincere",
-    desc: "Every essential, handled properly — for the pilgrim who travels with a simple heart and a simple budget.",
-    features: [
-      "Visa Processing",
-      "Flight Ticket (Economy)",
-      "Makkah Accommodation — 2 Star",
-      "Madeena Accommodation — 2 Star",
-      "Shared Ziyara transport",
-    ],
-  },
-  {
-    name: "Comfort Package",
-    tag: "Balanced & Refined",
-    desc: "A comfortable middle path — well-located stays and guided Ziyara, without excess.",
-    features: [
-      "Visa Processing",
-      "Flight Ticket (Economy Plus)",
-      "Makkah Accommodation — 3 Star",
-      "Makkah Ziyara — Guided",
-      "Madeena Accommodation — 3 Star",
-      "Madeena Ziyara — Guided",
-    ],
-    featured: true,
-  },
-  {
-    name: "Elite 5-Star Package",
-    tag: "The Full Delegation",
-    desc: "Uncompromising 5-Star hospitality, moments from the Haram in both cities, start to end.",
-    features: [
-      "Visa Processing",
-      "Flight Ticket (Business Available)",
-      "Makkah Accommodation — 5 Star, Haram View",
-      "Makkah Ziyara — Private Guided",
-      "Madeena Accommodation — 5 Star",
-      "Madeena Ziyara — Private Guided",
-    ],
-  },
-];
+import { PRESET_PACKAGES, presetWhatsappUrl, formatSar } from "../lib/presets";
 
 export default function Packages() {
   return (
@@ -65,33 +15,47 @@ export default function Packages() {
           <OrnamentDivider className="mt-10" />
           <p className="mt-8 text-ink/55 font-light max-w-xl mx-auto leading-relaxed">
             Choose a preset below for an instant, complete itinerary — or
-            build your own from the ground up.
+            build your own from the ground up. Prices are per person,
+            starting from, based on standard double occupancy.
           </p>
         </Reveal>
       </section>
 
       <section className="pb-28 md:pb-36 px-6">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-3 gap-6 items-stretch">
-          {PRESETS.map((p, i) => (
-            <Reveal key={p.name} delay={i * 0.1} className="h-full">
+          {PRESET_PACKAGES.map((p, i) => (
+            <Reveal key={p.id} delay={i * 0.1} className="h-full">
               <div
-                className={`h-full flex flex-col p-10 border transition-colors ${
+                className={`h-full flex flex-col pl-20 pr-6 py-10 sm:p-10 border transition-colors ${
                   p.featured
                     ? "border-gold bg-maroon text-cream relative"
                     : "border-maroon/15 bg-white/40 text-ink hover:border-gold/60"
                 }`}
               >
                 {p.featured && (
-                  <span className="absolute -top-3 left-10 bg-gold text-maroon-dark text-[10px] tracking-widest-lg uppercase px-3 py-1 font-medium">
-                    Most Chosen
+                  <span className="absolute -top-3 left-10 bg-gold text-maroon-dark text-[10px] tracking-widest-lg uppercase px-3 py-1 font-medium flex items-center gap-1">
+                    <span aria-hidden="true">★</span> Recommended
                   </span>
                 )}
                 <p className={`text-[11px] tracking-widest-lg uppercase mb-3 ${p.featured ? "text-gold" : "text-gold-dark"}`}>
                   {p.tag}
                 </p>
-                <h2 className={`text-2xl font-serif mb-4 ${p.featured ? "text-cream" : "text-maroon"}`}>{p.name}</h2>
+                <h2 className={`text-2xl font-serif mb-3 ${p.featured ? "text-cream" : "text-maroon"}`}>{p.name}</h2>
+
+                <div className="mb-5">
+                  <p className={`text-[11px] uppercase tracking-widest-lg ${p.featured ? "text-cream/50" : "text-ink/40"}`}>
+                    Starting from
+                  </p>
+                  <p className={`font-serif text-3xl ${p.featured ? "text-gold" : "text-maroon"}`}>
+                    {formatSar(p.priceSar)}
+                    <span className={`ml-2 text-sm font-sans font-light ${p.featured ? "text-cream/60" : "text-ink/45"}`}>
+                      / person (~${p.priceUsdApprox.toLocaleString("en-US")} USD)
+                    </span>
+                  </p>
+                </div>
+
                 <p className={`text-sm font-light leading-relaxed mb-8 ${p.featured ? "text-cream/70" : "text-ink/55"}`}>
-                  {p.desc}
+                  {p.blurb}
                 </p>
 
                 <ul className="space-y-3 mb-10 flex-1">
@@ -104,7 +68,7 @@ export default function Packages() {
                 </ul>
 
                 <a
-                  href={presetPackageWhatsappUrl(p.name)}
+                  href={presetWhatsappUrl(p)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`text-center py-4 text-sm tracking-widest-lg uppercase font-sans transition-colors ${
