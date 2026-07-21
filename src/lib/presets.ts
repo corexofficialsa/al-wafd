@@ -24,7 +24,6 @@ export const PRESET_PACKAGES: PresetPackage[] = [
       "Madeena Accommodation — 1 Star",
       "Madeena Ziyara",
       "Airport Drop-off",
-      "Private Ziyara Transport",
     ],
   },
   {
@@ -41,7 +40,6 @@ export const PRESET_PACKAGES: PresetPackage[] = [
       "Madeena Accommodation — 4 Star",
       "Madeena Ziyara — Guided",
       "Airport Drop-off",
-      "Private Ziyara Transport",
     ],
     featured: true,
   },
@@ -59,7 +57,6 @@ export const PRESET_PACKAGES: PresetPackage[] = [
       "Madeena Accommodation — 5 Star",
       "Madeena Ziyara — Private Guided",
       "Airport Drop-off",
-      "Private Ziyara Transport",
     ],
   },
 ];
