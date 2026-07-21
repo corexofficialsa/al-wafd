@@ -42,7 +42,7 @@ export default function PackageBuilder() {
             Build Your Own Package
           </h1>
           <OrnamentDivider className="mt-10" />
-          <p className="mt-8 text-ink/55 font-light max-w-xl mx-auto leading-relaxed">
+          <p className="mt-8 text-ink/55 font-normal max-w-xl mx-auto leading-relaxed">
             Turn on what you need. We'll send your choices straight to our
             team on WhatsApp.
           </p>
@@ -143,7 +143,7 @@ export default function PackageBuilder() {
                 {" · "}
                 {selection.quantity} {selection.quantity > 1 ? "packages" : "package"}
               </p>
-              <p className="font-serif text-xl md:text-2xl text-cream text-balance">
+              <p className="font-serif font-medium text-xl md:text-2xl text-cream text-balance">
                 Send your choices to our team.
               </p>
             </div>

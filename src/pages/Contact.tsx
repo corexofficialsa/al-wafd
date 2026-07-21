@@ -39,7 +39,7 @@ export default function Contact() {
                   onChange={(e) => setName(e.target.value)}
                   type="text"
                   required
-                  className="w-full bg-transparent border-b border-maroon/25 focus:border-gold outline-none py-3 text-lg font-light transition-colors"
+                  className="w-full bg-transparent border-b border-maroon/25 focus:border-gold outline-none py-3 text-lg font-normal transition-colors"
                   placeholder="Your name"
                 />
               </div>
@@ -50,7 +50,7 @@ export default function Contact() {
                   onChange={(e) => setPhone(e.target.value)}
                   type="tel"
                   required
-                  className="w-full bg-transparent border-b border-maroon/25 focus:border-gold outline-none py-3 text-lg font-light transition-colors"
+                  className="w-full bg-transparent border-b border-maroon/25 focus:border-gold outline-none py-3 text-lg font-normal transition-colors"
                   placeholder="+966 5X XXX XXXX"
                 />
               </div>
@@ -61,7 +61,7 @@ export default function Contact() {
                   onChange={(e) => setMessage(e.target.value)}
                   required
                   rows={4}
-                  className="w-full bg-transparent border-b border-maroon/25 focus:border-gold outline-none py-3 text-lg font-light transition-colors resize-none"
+                  className="w-full bg-transparent border-b border-maroon/25 focus:border-gold outline-none py-3 text-lg font-normal transition-colors resize-none"
                   placeholder="Tell us about your journey"
                 />
               </div>
@@ -72,7 +72,7 @@ export default function Contact() {
               >
                 Send via WhatsApp
               </button>
-              <p className="text-xs text-ink/40 font-light">
+              <p className="text-xs text-ink/40 font-normal">
                 This will open WhatsApp with your message ready to send.
               </p>
             </form>
@@ -82,19 +82,19 @@ export default function Contact() {
             <div className="h-full flex flex-col justify-center border-t md:border-t-0 md:border-l border-maroon/15 pt-10 md:pt-0 md:pl-16">
               <div className="mb-10">
                 <p className="text-xs tracking-widest-lg uppercase text-gold-dark mb-3">WhatsApp &amp; Phone</p>
-                <a href="tel:+966548609600" className="block text-2xl font-serif text-maroon hover:text-gold-dark transition-colors">
+                <a href="tel:+966548609600" className="block text-2xl font-serif font-medium text-maroon hover:text-gold-dark transition-colors">
                   +966 54 860 9600
                 </a>
               </div>
               <div className="mb-10">
                 <p className="text-xs tracking-widest-lg uppercase text-gold-dark mb-3">Email</p>
-                <a href="mailto:concierge@alwafd.travel" className="block text-lg font-light text-ink/70 hover:text-maroon transition-colors">
+                <a href="mailto:concierge@alwafd.travel" className="block text-lg font-normal text-ink/70 hover:text-maroon transition-colors">
                   concierge@alwafd.travel
                 </a>
               </div>
               <div>
                 <p className="text-xs tracking-widest-lg uppercase text-gold-dark mb-3">Offices</p>
-                <p className="text-lg font-light text-ink/70">Jeddah &middot; Makkah &middot; Madeenah</p>
+                <p className="text-lg font-normal text-ink/70">Jeddah &middot; Makkah &middot; Madeenah</p>
               </div>
             </div>
           </Reveal>

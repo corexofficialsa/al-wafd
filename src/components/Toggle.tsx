@@ -15,9 +15,9 @@ export default function Toggle({ checked, onChange, label, description }: Toggle
       className="w-full flex items-center justify-between gap-6 py-5 text-left group"
     >
       <span>
-        <span className="block text-base md:text-lg font-serif text-maroon">{label}</span>
+        <span className="block text-base md:text-lg font-serif font-medium text-maroon">{label}</span>
         {description && (
-          <span className="block text-xs md:text-sm font-light text-ink/45 mt-1">{description}</span>
+          <span className="block text-xs md:text-sm font-normal text-ink/45 mt-1">{description}</span>
         )}
       </span>
       <span

@@ -50,13 +50,13 @@ export default function Navbar() {
             className="h-14 w-14 md:h-16 md:w-16 object-contain"
           />
           <span
-            className={`font-serif text-2xl tracking-wide flex items-baseline gap-2 transition-colors duration-500 ${
+            className={`font-serif font-medium text-2xl tracking-wide flex items-baseline gap-2 transition-colors duration-500 ${
               onDarkHero ? "text-cream" : "text-maroon"
             }`}
           >
             Al Wafd
             <span
-              className={`hidden sm:inline text-[10px] font-sans font-light tracking-widest-lg uppercase transition-colors duration-500 ${
+              className={`hidden sm:inline text-[10px] font-sans font-normal tracking-widest-lg uppercase transition-colors duration-500 ${
                 onDarkHero ? "text-gold" : "text-gold-dark"
               }`}
             >
@@ -71,14 +71,14 @@ export default function Navbar() {
               key={l.to}
               to={l.to}
               className={({ isActive }) =>
-                `text-[13px] tracking-widest-lg uppercase font-sans transition-colors duration-500 ${
+                `text-[15px] font-medium tracking-wide font-sans transition-colors duration-500 ${
                   isActive
                     ? onDarkHero
                       ? "text-gold"
                       : "text-maroon"
                     : onDarkHero
-                      ? "text-cream/75 hover:text-gold"
-                      : "text-ink/70 hover:text-maroon"
+                      ? "text-cream/80 hover:text-gold"
+                      : "text-ink/75 hover:text-maroon"
                 }`
               }
             >
@@ -117,8 +117,8 @@ export default function Navbar() {
                   to={l.to}
                   onClick={() => setOpen(false)}
                   className={({ isActive }) =>
-                    `text-sm tracking-widest-lg uppercase font-sans py-1 ${
-                      isActive ? "text-maroon" : "text-ink/70"
+                    `text-base font-medium tracking-wide font-sans py-1 ${
+                      isActive ? "text-maroon" : "text-ink/75"
                     }`
                   }
                 >

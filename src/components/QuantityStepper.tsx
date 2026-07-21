@@ -18,9 +18,9 @@ export default function QuantityStepper({
   return (
     <div className="w-full flex items-center justify-between gap-6 py-5 text-left">
       <span>
-        <span className="block text-base md:text-lg font-serif text-maroon">{label}</span>
+        <span className="block text-base md:text-lg font-serif font-medium text-maroon">{label}</span>
         {description && (
-          <span className="block text-xs md:text-sm font-light text-ink/45 mt-1">{description}</span>
+          <span className="block text-xs md:text-sm font-normal text-ink/45 mt-1">{description}</span>
         )}
       </span>
       <span className="flex items-center gap-4 shrink-0">
@@ -33,7 +33,7 @@ export default function QuantityStepper({
         >
           &minus;
         </button>
-        <span className="w-6 text-center font-serif text-lg text-maroon">{value}</span>
+        <span className="w-6 text-center font-serif font-semibold text-lg text-maroon">{value}</span>
         <button
           type="button"
           aria-label={`Increase ${label}`}

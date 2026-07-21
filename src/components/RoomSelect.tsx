@@ -28,8 +28,8 @@ export default function RoomSelect({
 
   return (
     <div className="py-5">
-      <label className="block text-base md:text-lg font-serif text-maroon mb-1">{label}</label>
-      {description && <p className="text-xs md:text-sm font-light text-ink/45 mb-4">{description}</p>}
+      <label className="block text-base md:text-lg font-serif font-medium text-maroon mb-1">{label}</label>
+      {description && <p className="text-xs md:text-sm font-normal text-ink/45 mb-4">{description}</p>}
       <div className="relative">
         <select
           value={value}

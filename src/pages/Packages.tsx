@@ -13,7 +13,7 @@ export default function Packages() {
             Three Packages to Choose From
           </h1>
           <OrnamentDivider className="mt-10" />
-          <p className="mt-8 text-ink/55 font-light max-w-xl mx-auto leading-relaxed">
+          <p className="mt-8 text-ink/55 font-normal max-w-xl mx-auto leading-relaxed">
             Pick one of the packages below, or build your own from scratch.
           </p>
         </Reveal>
@@ -40,13 +40,13 @@ export default function Packages() {
                 </p>
                 <h2 className={`text-2xl font-serif mb-4 ${p.featured ? "text-cream" : "text-maroon"}`}>{p.name}</h2>
 
-                <p className={`text-sm font-light leading-relaxed mb-8 ${p.featured ? "text-cream/70" : "text-ink/55"}`}>
+                <p className={`text-sm font-normal leading-relaxed mb-8 ${p.featured ? "text-cream/70" : "text-ink/55"}`}>
                   {p.blurb}
                 </p>
 
                 <ul className="space-y-3 mb-10 flex-1">
                   {p.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3 text-sm font-light">
+                    <li key={f} className="flex items-start gap-3 text-sm font-normal">
                       <span className={`mt-1.5 w-1 h-1 rounded-full shrink-0 ${p.featured ? "bg-gold" : "bg-maroon"}`} />
                       <span className={p.featured ? "text-cream/85" : "text-ink/70"}>{f}</span>
                     </li>
@@ -74,7 +74,7 @@ export default function Packages() {
       <section className="pb-28 md:pb-36 px-6 text-center">
         <Reveal>
           <h2 className="text-2xl md:text-3xl text-maroon mb-6">None of these quite right?</h2>
-          <p className="text-ink/55 font-light mb-8 max-w-md mx-auto">
+          <p className="text-ink/55 font-normal mb-8 max-w-md mx-auto">
             Build your own package. Choose your hotel rating, guided visits,
             visa, and flights — one by one.
           </p>

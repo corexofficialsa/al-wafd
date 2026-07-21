@@ -39,7 +39,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-8 text-cream/75 font-sans font-light text-base md:text-lg max-w-xl"
+            className="mt-8 text-cream/75 font-sans font-normal text-base md:text-lg max-w-xl"
           >
             We handle your whole Umrah trip — visa, flights, and hotels —
             with care, so you can focus on your worship.
@@ -59,7 +59,7 @@ export default function Home() {
             </Link>
             <Link
               to="/packages"
-              className="px-8 py-4 border border-cream/40 text-cream text-sm tracking-widest-lg uppercase font-sans font-light hover:border-gold hover:text-gold transition-colors"
+              className="px-8 py-4 border border-cream/40 text-cream text-sm tracking-widest-lg uppercase font-sans font-normal hover:border-gold hover:text-gold transition-colors"
             >
               View Packages
             </Link>
@@ -84,7 +84,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-5xl text-maroon text-balance leading-tight">
               We handle every detail,<br className="hidden md:block" /> so you can focus on your worship.
             </h2>
-            <p className="mt-8 text-ink/60 font-light text-base md:text-lg leading-relaxed max-w-xl mx-auto">
+            <p className="mt-8 text-ink/60 font-normal text-base md:text-lg leading-relaxed max-w-xl mx-auto">
               Al Wafd makes your pilgrimage easy. One trusted team takes
               care of your visa, travel, and hotels, with care and
               attention to every detail.
@@ -105,9 +105,9 @@ export default function Home() {
             {SERVICES.map((s, i) => (
               <Reveal key={s.title} delay={i * 0.06} y={20}>
                 <div className="bg-cream h-full p-8 hover:bg-white transition-colors">
-                  <div className="text-gold text-2xl font-serif mb-4">{String(i + 1).padStart(2, "0")}</div>
+                  <div className="text-gold text-3xl font-serif font-semibold mb-4">{String(i + 1).padStart(2, "0")}</div>
                   <h3 className="text-lg text-maroon mb-2">{s.title}</h3>
-                  <p className="text-sm text-ink/55 font-light leading-relaxed">{s.desc}</p>
+                  <p className="text-sm text-ink/55 font-normal leading-relaxed">{s.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -143,7 +143,7 @@ export default function Home() {
                   <div className="relative">
                     <p className="text-[11px] tracking-widest-lg uppercase text-gold-dark mb-3">{p.tag}</p>
                     <h3 className="text-2xl font-serif text-maroon mb-4">{p.name}</h3>
-                    <p className="text-sm text-ink/55 font-light leading-relaxed mb-8">{p.blurb}</p>
+                    <p className="text-sm text-ink/55 font-normal leading-relaxed mb-8">{p.blurb}</p>
                     <span className="text-xs tracking-widest-lg uppercase text-maroon group-hover:text-gold-dark transition-colors">
                       Explore &rarr;
                     </span>
@@ -162,7 +162,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-5xl text-cream mb-6 max-w-2xl text-balance">
               Start with one message.
             </h2>
-            <p className="text-cream/70 font-light mb-10 max-w-md mx-auto">
+            <p className="text-cream/70 font-normal mb-10 max-w-md mx-auto">
               Our team will reply to you within the hour.
             </p>
             <Link

@@ -36,20 +36,20 @@ export default function About() {
         <div className="max-w-2xl mx-auto text-center">
           <Reveal>
             <OrnamentDivider className="mb-10" />
-            <p className="text-2xl md:text-3xl font-serif text-maroon leading-snug text-balance">
+            <p className="text-2xl md:text-3xl font-serif font-medium text-maroon leading-snug text-balance">
               "Al Wafd" means "the delegation" — people who travel to be
               welcomed. We built this company to welcome them the right way.
             </p>
           </Reveal>
 
           <Reveal delay={0.15}>
-            <p className="mt-10 text-ink/60 font-light leading-relaxed text-base md:text-lg">
+            <p className="mt-10 text-ink/60 font-normal leading-relaxed text-base md:text-lg">
               Every pilgrim who comes for Umrah is a guest of Allah's House.
               Our job is simple, and we take it seriously: we handle the
               visa, flights, hotels, and guided visits — so nothing gets in
               the way of your worship.
             </p>
-            <p className="mt-6 text-ink/60 font-light leading-relaxed text-base md:text-lg">
+            <p className="mt-6 text-ink/60 font-normal leading-relaxed text-base md:text-lg">
               No call centers. No copy-paste replies. Our team answers you
               directly, remembers what you like, and gives the same care to
               every question — big or small.
@@ -63,9 +63,9 @@ export default function About() {
           {VALUES.map((v, i) => (
             <Reveal key={v.title} delay={i * 0.1}>
               <div className="bg-maroon h-full p-10 text-center">
-                <p className="font-serif text-gold text-3xl mb-2">{v.ar}</p>
+                <p className="font-serif font-medium text-gold text-3xl mb-2">{v.ar}</p>
                 <h3 className="text-cream text-xl mb-4 tracking-wide">{v.title}</h3>
-                <p className="text-cream/60 font-light text-sm leading-relaxed">{v.desc}</p>
+                <p className="text-cream/60 font-normal text-sm leading-relaxed">{v.desc}</p>
               </div>
             </Reveal>
           ))}
@@ -76,7 +76,7 @@ export default function About() {
         <div className="max-w-2xl mx-auto text-center">
           <Reveal>
             <h2 className="text-3xl md:text-4xl text-maroon mb-6">A Real Promise, Not Just Words</h2>
-            <p className="text-ink/60 font-light leading-relaxed text-base md:text-lg">
+            <p className="text-ink/60 font-normal leading-relaxed text-base md:text-lg">
               We only do one thing: Umrah. That means we do it well. From
               the moment we file your visa to your last visit in Madeenah,
               one team stays with you the whole way.
