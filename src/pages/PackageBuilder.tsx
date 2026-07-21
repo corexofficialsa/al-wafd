@@ -4,6 +4,7 @@ import Reveal from "../components/Reveal";
 import OrnamentDivider from "../components/OrnamentDivider";
 import Toggle from "../components/Toggle";
 import RoomSelect from "../components/RoomSelect";
+import QuantityStepper from "../components/QuantityStepper";
 import {
   customPackageWhatsappUrl,
   defaultSelection,
@@ -14,10 +15,12 @@ function selectionCount(s: CustomSelection): number {
   let n = 0;
   if (s.visa) n++;
   if (s.ticket) n++;
+  if (s.airportPickup) n++;
   if (s.makkahRoom !== "None") n++;
   if (s.makkahZiyara) n++;
   if (s.madeenaRoom !== "None") n++;
   if (s.madeenaZiyara) n++;
+  if (s.airportDropoff) n++;
   return n;
 }
 
@@ -36,12 +39,12 @@ export default function PackageBuilder() {
         <Reveal>
           <p className="text-gold-dark text-xs tracking-widest-lg uppercase mb-5">Package Builder</p>
           <h1 className="text-4xl md:text-6xl text-maroon max-w-3xl mx-auto text-balance leading-tight">
-            Your Journey, Built Service by Service
+            Build Your Own Package
           </h1>
           <OrnamentDivider className="mt-10" />
           <p className="mt-8 text-ink/55 font-light max-w-xl mx-auto leading-relaxed">
-            Toggle exactly what you need. Your selections generate a single,
-            precise enquiry sent directly to our concierge on WhatsApp.
+            Turn on what you need. We'll send your choices straight to our
+            team on WhatsApp.
           </p>
         </Reveal>
       </section>
@@ -50,17 +53,35 @@ export default function PackageBuilder() {
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-x-16 pl-20 sm:pl-0">
           <Reveal className="md:col-span-2">
             <div className="border-b border-maroon/15 divide-y divide-maroon/10">
+              <QuantityStepper
+                value={selection.quantity}
+                onChange={(v) => set("quantity", v)}
+                label="Number of Packages"
+                description="How many people is this for?"
+              />
               <Toggle
                 checked={selection.visa}
                 onChange={(v) => set("visa", v)}
                 label="Visa Processing"
-                description="Full Umrah visa documentation and filing."
+                description="We handle all the visa paperwork for you."
               />
               <Toggle
                 checked={selection.ticket}
                 onChange={(v) => set("ticket", v)}
                 label="Flight Ticket"
-                description="Round-trip air travel, arranged to your schedule."
+                description="We book your flight there and back."
+              />
+              <Toggle
+                checked={selection.airportPickup}
+                onChange={(v) => set("airportPickup", v)}
+                label="Airport Pickup"
+                description="Met on arrival and driven straight to your hotel."
+              />
+              <Toggle
+                checked={selection.airportDropoff}
+                onChange={(v) => set("airportDropoff", v)}
+                label="Airport Drop-off"
+                description="Driven to the airport ahead of your departure."
               />
             </div>
           </Reveal>
@@ -72,7 +93,7 @@ export default function PackageBuilder() {
                 value={selection.makkahRoom}
                 onChange={(v) => set("makkahRoom", v)}
                 label="Makkah Accommodation"
-                description="Star rating for your stay near the Haram."
+                description="Choose your hotel rating near the Haram."
               />
               <Toggle
                 checked={selection.makkahZiyara}
@@ -90,7 +111,7 @@ export default function PackageBuilder() {
                 value={selection.madeenaRoom}
                 onChange={(v) => set("madeenaRoom", v)}
                 label="Madeena Accommodation"
-                description="Star rating for your stay near Al-Masjid an-Nabawi."
+                description="Choose your hotel rating near the Prophet's Mosque."
               />
               <Toggle
                 checked={selection.madeenaZiyara}
@@ -111,9 +132,11 @@ export default function PackageBuilder() {
             <div className="text-center md:text-left">
               <p className="text-[11px] tracking-widest-lg uppercase text-gold/80 mb-2">
                 {count === 0 ? "Nothing selected yet" : `${count} service${count > 1 ? "s" : ""} selected`}
+                {" · "}
+                {selection.quantity} {selection.quantity > 1 ? "packages" : "package"}
               </p>
               <p className="font-serif text-xl md:text-2xl text-cream text-balance">
-                Send your exact requirements to our concierge.
+                Send your choices to our team.
               </p>
             </div>
             <a

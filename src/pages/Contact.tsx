@@ -22,7 +22,7 @@ export default function Contact() {
         <Reveal>
           <p className="text-gold-dark text-xs tracking-widest-lg uppercase mb-5">Contact</p>
           <h1 className="text-4xl md:text-6xl text-maroon max-w-3xl mx-auto text-balance leading-tight">
-            Speak Directly With Our Concierge
+            Talk to Our Team
           </h1>
           <OrnamentDivider className="mt-10" />
         </Reveal>
@@ -73,7 +73,7 @@ export default function Contact() {
                 Send via WhatsApp
               </button>
               <p className="text-xs text-ink/40 font-light">
-                Submitting opens WhatsApp with your message pre-filled to our concierge team.
+                This will open WhatsApp with your message ready to send.
               </p>
             </form>
           </Reveal>

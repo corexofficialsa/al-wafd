@@ -1,22 +1,20 @@
 import { Link } from "react-router-dom";
 import Reveal from "../components/Reveal";
 import OrnamentDivider from "../components/OrnamentDivider";
-import { PRESET_PACKAGES, presetWhatsappUrl, formatSar } from "../lib/presets";
+import { PRESET_PACKAGES, presetWhatsappUrl } from "../lib/presets";
 
 export default function Packages() {
   return (
     <div>
       <section className="pt-40 pb-20 md:pt-48 md:pb-24 px-6 text-center">
         <Reveal>
-          <p className="text-gold-dark text-xs tracking-widest-lg uppercase mb-5">Preset Journeys</p>
+          <p className="text-gold-dark text-xs tracking-widest-lg uppercase mb-5">Ready-Made Packages</p>
           <h1 className="text-4xl md:text-6xl text-maroon max-w-3xl mx-auto text-balance leading-tight">
-            Three Ways to Travel, Each Fully Curated
+            Three Packages to Choose From
           </h1>
           <OrnamentDivider className="mt-10" />
           <p className="mt-8 text-ink/55 font-light max-w-xl mx-auto leading-relaxed">
-            Choose a preset below for an instant, complete itinerary — or
-            build your own from the ground up. Prices are per person,
-            starting from, based on standard double occupancy.
+            Pick one of the packages below, or build your own from scratch.
           </p>
         </Reveal>
       </section>
@@ -33,26 +31,14 @@ export default function Packages() {
                 }`}
               >
                 {p.featured && (
-                  <span className="absolute -top-3 left-10 bg-gold text-maroon-dark text-[10px] tracking-widest-lg uppercase px-3 py-1 font-medium flex items-center gap-1">
-                    <span aria-hidden="true">★</span> Recommended
+                  <span className="absolute -top-3 left-10 bg-gold text-maroon-dark text-[10px] tracking-widest-lg uppercase px-3 py-1 font-medium">
+                    Most Chosen
                   </span>
                 )}
                 <p className={`text-[11px] tracking-widest-lg uppercase mb-3 ${p.featured ? "text-gold" : "text-gold-dark"}`}>
                   {p.tag}
                 </p>
-                <h2 className={`text-2xl font-serif mb-3 ${p.featured ? "text-cream" : "text-maroon"}`}>{p.name}</h2>
-
-                <div className="mb-5">
-                  <p className={`text-[11px] uppercase tracking-widest-lg ${p.featured ? "text-cream/50" : "text-ink/40"}`}>
-                    Starting from
-                  </p>
-                  <p className={`font-serif text-3xl ${p.featured ? "text-gold" : "text-maroon"}`}>
-                    {formatSar(p.priceSar)}
-                    <span className={`ml-2 text-sm font-sans font-light ${p.featured ? "text-cream/60" : "text-ink/45"}`}>
-                      / person (~${p.priceUsdApprox.toLocaleString("en-US")} USD)
-                    </span>
-                  </p>
-                </div>
+                <h2 className={`text-2xl font-serif mb-4 ${p.featured ? "text-cream" : "text-maroon"}`}>{p.name}</h2>
 
                 <p className={`text-sm font-light leading-relaxed mb-8 ${p.featured ? "text-cream/70" : "text-ink/55"}`}>
                   {p.blurb}
@@ -89,8 +75,8 @@ export default function Packages() {
         <Reveal>
           <h2 className="text-2xl md:text-3xl text-maroon mb-6">None of these quite right?</h2>
           <p className="text-ink/55 font-light mb-8 max-w-md mx-auto">
-            Build a package to your exact specification — room star ratings,
-            Ziyara, visa, and flights, chosen piece by piece.
+            Build your own package. Choose your hotel rating, guided visits,
+            visa, and flights — one by one.
           </p>
           <Link
             to="/build"

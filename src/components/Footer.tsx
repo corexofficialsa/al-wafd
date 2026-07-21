@@ -12,8 +12,8 @@ export default function Footer() {
               <span className="font-serif text-2xl text-gold">Al Wafd</span>
             </div>
             <p className="text-sm font-light leading-relaxed text-cream/60 max-w-xs">
-              A quiet concierge for the delegation of the House — Umrah journeys
-              arranged with premium hospitality, from visa to Ziyara.
+              We plan Umrah trips with care, from your visa to your
+              guided visits to the holy sites.
             </p>
           </div>
 

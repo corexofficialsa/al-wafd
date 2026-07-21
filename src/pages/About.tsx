@@ -6,17 +6,17 @@ const VALUES = [
   {
     title: "Wafd",
     ar: "الوفد",
-    desc: "A delegation — those who arrive with honor, and are received with honor in turn.",
+    desc: "A delegation — people who arrive with honor, and are welcomed with honor.",
   },
   {
     title: "Discretion",
     ar: "الكتمان",
-    desc: "A single point of contact. No layers, no hand-offs, no noise.",
+    desc: "One person to talk to. No confusion, no being passed around.",
   },
   {
     title: "Precision",
     ar: "الدقة",
-    desc: "Every visa, seat, and room confirmed before it is promised.",
+    desc: "We only promise a visa, seat, or room once it's confirmed.",
   },
 ];
 
@@ -27,7 +27,7 @@ export default function About() {
         <div className="h-full flex flex-col items-center justify-center text-center px-6">
           <p className="text-gold text-xs tracking-widest-lg uppercase mb-5">About Al Wafd</p>
           <h1 className="text-cream text-4xl md:text-6xl max-w-2xl text-balance leading-tight">
-            The Delegation, Received With Honor
+            A Delegation, Welcomed With Honor
           </h1>
         </div>
       </ParallaxSurface>
@@ -37,24 +37,22 @@ export default function About() {
           <Reveal>
             <OrnamentDivider className="mb-10" />
             <p className="text-2xl md:text-3xl font-serif text-maroon leading-snug text-balance">
-              "Al Wafd" means the delegation — those who travel to be received.
-              We built this house to receive them properly.
+              "Al Wafd" means "the delegation" — people who travel to be
+              welcomed. We built this company to welcome them the right way.
             </p>
           </Reveal>
 
           <Reveal delay={0.15}>
             <p className="mt-10 text-ink/60 font-light leading-relaxed text-base md:text-lg">
-              Every guest who travels for Umrah arrives as part of a delegation
-              to the House of Allah. Our role is simple, and we take it
-              seriously: to handle the logistics — visas, flights,
-              accommodation, and guided Ziyara — so completely and so quietly
-              that nothing stands between you and the reason you came.
+              Every pilgrim who comes for Umrah is a guest of Allah's House.
+              Our job is simple, and we take it seriously: we handle the
+              visa, flights, hotels, and guided visits — so nothing gets in
+              the way of your worship.
             </p>
             <p className="mt-6 text-ink/60 font-light leading-relaxed text-base md:text-lg">
-              No call centers. No templated replies. A concierge team that
-              answers directly, remembers your preferences, and treats every
-              enquiry — from a single question to a full family itinerary —
-              with the same unhurried attention.
+              No call centers. No copy-paste replies. Our team answers you
+              directly, remembers what you like, and gives the same care to
+              every question — big or small.
             </p>
           </Reveal>
         </div>
@@ -77,12 +75,11 @@ export default function About() {
       <section className="py-28 md:py-36 px-6">
         <div className="max-w-2xl mx-auto text-center">
           <Reveal>
-            <h2 className="text-3xl md:text-4xl text-maroon mb-6">A Standard, Not a Slogan</h2>
+            <h2 className="text-3xl md:text-4xl text-maroon mb-6">A Real Promise, Not Just Words</h2>
             <p className="text-ink/60 font-light leading-relaxed text-base md:text-lg">
-              We keep our offering deliberately narrow — Umrah, and Umrah
-              only — so that what we do, we do completely. From the moment
-              your visa is filed to the final Ziyara in Madeenah, one team
-              carries the journey from start to end.
+              We only do one thing: Umrah. That means we do it well. From
+              the moment we file your visa to your last visit in Madeenah,
+              one team stays with you the whole way.
             </p>
           </Reveal>
         </div>
