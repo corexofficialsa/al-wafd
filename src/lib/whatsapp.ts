@@ -8,8 +8,12 @@ export interface CustomSelection {
   ticket: boolean;
   airportPickup: boolean;
   makkahRoom: RoomTier;
+  makkahCheckIn: string;
+  makkahCheckOut: string;
   makkahZiyara: boolean;
   madeenaRoom: RoomTier;
+  madeenaCheckIn: string;
+  madeenaCheckOut: string;
   madeenaZiyara: boolean;
   airportDropoff: boolean;
 }
@@ -20,30 +24,56 @@ export const defaultSelection: CustomSelection = {
   ticket: false,
   airportPickup: false,
   makkahRoom: "None",
+  makkahCheckIn: "",
+  makkahCheckOut: "",
   makkahZiyara: false,
   madeenaRoom: "None",
+  madeenaCheckIn: "",
+  madeenaCheckOut: "",
   madeenaZiyara: false,
   airportDropoff: false,
 };
 
 const yn = (v: boolean) => (v ? "Yes" : "No");
 
+function formatDate(iso: string): string {
+  const d = new Date(`${iso}T00:00:00`);
+  return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+}
+
 export function buildWhatsappUrl(message: string): string {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
 export function customPackageMessage(s: CustomSelection): string {
+  const lines: string[] = [
+    `Number of Packages: ${s.quantity}`,
+    `Visa: ${yn(s.visa)}`,
+    `Ticket: ${yn(s.ticket)}`,
+    `Airport Pickup: ${yn(s.airportPickup)}`,
+    `Makkah Rooms: ${s.makkahRoom}`,
+  ];
+  if (s.makkahRoom !== "None" && s.makkahCheckIn) {
+    lines.push(`Makkah Check-in: ${formatDate(s.makkahCheckIn)}`);
+  }
+  if (s.makkahRoom !== "None" && s.makkahCheckOut) {
+    lines.push(`Makkah Check-out: ${formatDate(s.makkahCheckOut)}`);
+  }
+  lines.push(`Makkah Ziyara: ${yn(s.makkahZiyara)}`);
+  lines.push(`Madeena Rooms: ${s.madeenaRoom}`);
+  if (s.madeenaRoom !== "None" && s.madeenaCheckIn) {
+    lines.push(`Madeena Check-in: ${formatDate(s.madeenaCheckIn)}`);
+  }
+  if (s.madeenaRoom !== "None" && s.madeenaCheckOut) {
+    lines.push(`Madeena Check-out: ${formatDate(s.madeenaCheckOut)}`);
+  }
+  lines.push(`Madeena Ziyara: ${yn(s.madeenaZiyara)}`);
+  lines.push(`Airport Drop-off: ${yn(s.airportDropoff)}`);
+
   return (
     `Bismillah. Assalamu Alaikum Al Wafd Team, I would like to enquire about a customized package with the following requirements: \n` +
-    `- Number of Packages: ${s.quantity} \n` +
-    `- Visa: ${yn(s.visa)} \n` +
-    `- Ticket: ${yn(s.ticket)} \n` +
-    `- Airport Pickup: ${yn(s.airportPickup)} \n` +
-    `- Makkah Rooms: ${s.makkahRoom} \n` +
-    `- Makkah Ziyara: ${yn(s.makkahZiyara)} \n` +
-    `- Madeena Rooms: ${s.madeenaRoom} \n` +
-    `- Madeena Ziyara: ${yn(s.madeenaZiyara)} \n` +
-    `- Airport Drop-off: ${yn(s.airportDropoff)}. Please provide a quote.`
+    lines.map((l) => `- ${l}`).join(" \n") +
+    `. Please provide a quote.`
   );
 }
 

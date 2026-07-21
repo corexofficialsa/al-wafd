@@ -94,6 +94,10 @@ export default function PackageBuilder() {
                 onChange={(v) => set("makkahRoom", v)}
                 label="Makkah Accommodation"
                 description="Choose your hotel rating near the Haram."
+                checkIn={selection.makkahCheckIn}
+                onCheckInChange={(v) => set("makkahCheckIn", v)}
+                checkOut={selection.makkahCheckOut}
+                onCheckOutChange={(v) => set("makkahCheckOut", v)}
               />
               <Toggle
                 checked={selection.makkahZiyara}
@@ -112,6 +116,10 @@ export default function PackageBuilder() {
                 onChange={(v) => set("madeenaRoom", v)}
                 label="Madeena Accommodation"
                 description="Choose your hotel rating near the Prophet's Mosque."
+                checkIn={selection.madeenaCheckIn}
+                onCheckInChange={(v) => set("madeenaCheckIn", v)}
+                checkOut={selection.madeenaCheckOut}
+                onCheckOutChange={(v) => set("madeenaCheckOut", v)}
               />
               <Toggle
                 checked={selection.madeenaZiyara}
