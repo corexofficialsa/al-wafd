@@ -29,34 +29,40 @@
   }
 }
 
-* {
-  box-sizing: border-box;
-}
+/* Cascade layers matter here: anything left unlayered outranks every
+   Tailwind utility (base/components/utilities), no matter its specificity.
+   Wrapping our reset in @layer base keeps it under the utilities layer so
+   things like mx-auto or mb-6 on an h1/h2/body still win as expected. */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
 
-html {
-  scroll-behavior: smooth;
-  overflow-anchor: none;
-}
+  html {
+    scroll-behavior: smooth;
+    overflow-anchor: none;
+  }
 
-body {
-  margin: 0;
-  background: var(--color-cream);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  font-weight: 300;
-  overflow-anchor: none;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  body {
+    margin: 0;
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    overflow-anchor: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  margin: 0;
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    margin: 0;
+  }
 }
 
 ::selection {
