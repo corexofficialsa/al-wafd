@@ -21,7 +21,7 @@ export const PRESET_PACKAGES: PresetPackage[] = [
       "Airport Pickup",
       "Makkah Accommodation — 1 Star",
       "Makkah Ziyara",
-      "Madeena Accommodation — 2 Star",
+      "Madeena Accommodation — 1 Star",
       "Madeena Ziyara",
       "Airport Drop-off",
       "Private Ziyara Transport",
