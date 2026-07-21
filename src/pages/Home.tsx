@@ -31,7 +31,7 @@ const SERVICES: { title: Bi; desc: Bi }[] = [
   },
   {
     title: { en: "Madeena Accommodation", ml: "മദീന താമസം" },
-    desc: { en: "Stay close to the Prophet's Mosque.", ml: "നബി(സ)യുടെ പള്ളിക്ക് അടുത്ത് താമസിക്കാം." },
+    desc: { en: "Stay close to the Prophet's Mosque.", ml: "മസ്ജിദുന്നബവിക്ക് അടുത്ത് താമസിക്കാം." },
   },
   {
     title: { en: "Madeena Ziyara", ml: "മദീന സിയാറ" },

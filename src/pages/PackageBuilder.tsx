@@ -146,7 +146,7 @@ export default function PackageBuilder() {
                 label={t({ en: "Madeena Accommodation", ml: "മദീന താമസം" })}
                 description={t({
                   en: "Choose your hotel rating near the Prophet's Mosque.",
-                  ml: "നബി പള്ളിക്ക് അടുത്തുള്ള ഹോട്ടൽ റേറ്റിംഗ് തിരഞ്ഞെടുക്കൂ.",
+                  ml: "മസ്ജിദുന്നബവിക്ക് അടുത്തുള്ള ഹോട്ടൽ റേറ്റിംഗ് തിരഞ്ഞെടുക്കൂ.",
                 })}
                 checkIn={selection.madeenaCheckIn}
                 onCheckInChange={(v) => set("madeenaCheckIn", v)}
