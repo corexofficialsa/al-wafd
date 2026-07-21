@@ -1,3 +1,5 @@
+import { useT } from "../lib/i18n";
+
 interface QuantityStepperProps {
   value: number;
   onChange: (v: number) => void;
@@ -15,6 +17,8 @@ export default function QuantityStepper({
   min = 1,
   max = 20,
 }: QuantityStepperProps) {
+  const t = useT();
+
   return (
     <div className="w-full flex items-center justify-between gap-6 py-5 text-left">
       <span>
@@ -26,7 +30,7 @@ export default function QuantityStepper({
       <span className="flex items-center gap-4 shrink-0">
         <button
           type="button"
-          aria-label={`Decrease ${label}`}
+          aria-label={`${t({ en: "Decrease", ml: "കുറയ്ക്കുക" })} ${label}`}
           onClick={() => onChange(Math.max(min, value - 1))}
           disabled={value <= min}
           className="w-8 h-8 flex items-center justify-center border border-maroon/25 text-maroon hover:border-gold hover:text-gold-dark transition-colors disabled:opacity-30 disabled:hover:border-maroon/25 disabled:hover:text-maroon"
@@ -36,7 +40,7 @@ export default function QuantityStepper({
         <span className="w-6 text-center font-serif font-semibold text-lg text-maroon">{value}</span>
         <button
           type="button"
-          aria-label={`Increase ${label}`}
+          aria-label={`${t({ en: "Increase", ml: "കൂട്ടുക" })} ${label}`}
           onClick={() => onChange(Math.min(max, value + 1))}
           disabled={value >= max}
           className="w-8 h-8 flex items-center justify-center border border-maroon/25 text-maroon hover:border-gold hover:text-gold-dark transition-colors disabled:opacity-30 disabled:hover:border-maroon/25 disabled:hover:text-maroon"

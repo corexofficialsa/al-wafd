@@ -1,16 +1,19 @@
 import { generalEnquiryWhatsappUrl } from "../lib/whatsapp";
+import { useLanguage } from "../lib/i18n";
 
 const PHONE_DISPLAY = "+966 54 860 9600";
 const PHONE_TEL = "+966548609600";
 
 export default function FloatingContact() {
+  const { lang } = useLanguage();
+
   return (
     <div className="fixed left-4 bottom-4 md:left-6 md:bottom-6 z-50 flex flex-col gap-3">
       <a
-        href={generalEnquiryWhatsappUrl()}
+        href={generalEnquiryWhatsappUrl(lang)}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Chat with Al Wafd on WhatsApp"
+        aria-label={lang === "ml" ? "അൽ വഫ്ദുമായി വാട്സാപ്പിൽ സംസാരിക്കുക" : "Chat with Al Wafd on WhatsApp"}
         className="group relative flex items-center justify-center w-16 h-16 md:w-[4.5rem] md:h-[4.5rem] rounded-full bg-[#25D366] shadow-[0_6px_24px_rgba(0,0,0,0.25)] transition-transform hover:scale-105"
       >
         <svg viewBox="0 0 32 32" fill="white" className="w-8 h-8 md:w-9 md:h-9">
@@ -21,7 +24,7 @@ export default function FloatingContact() {
 
       <a
         href={`tel:${PHONE_TEL}`}
-        aria-label={`Call Al Wafd at ${PHONE_DISPLAY}`}
+        aria-label={lang === "ml" ? `അൽ വഫ്ദിനെ വിളിക്കുക ${PHONE_DISPLAY}` : `Call Al Wafd at ${PHONE_DISPLAY}`}
         className="flex items-center justify-center w-16 h-16 md:w-[4.5rem] md:h-[4.5rem] rounded-full bg-maroon text-gold shadow-[0_6px_24px_rgba(138,0,77,0.35)] transition-transform hover:scale-105"
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-7 h-7 md:w-8 md:h-8">

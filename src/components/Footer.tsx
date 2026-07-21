@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useT } from "../lib/i18n";
 
 export default function Footer() {
+  const t = useT();
+
   return (
     <footer className="bg-maroon text-cream/80 pt-16 pb-28 md:pb-16">
       <div className="max-w-7xl mx-auto px-6 md:px-10">
@@ -12,24 +15,30 @@ export default function Footer() {
               <span className="font-serif font-medium text-2xl text-gold">Al Wafd</span>
             </div>
             <p className="text-sm font-normal leading-relaxed text-cream/60 max-w-xs">
-              We plan Umrah trips with care, from your visa to your
-              guided visits to the holy sites.
+              {t({
+                en: "We plan Umrah trips with care, from your visa to your guided visits to the holy sites.",
+                ml: "വിസ മുതൽ പുണ്യസ്ഥലങ്ങളിലേക്കുള്ള ഗൈഡഡ് സന്ദർശനങ്ങൾ വരെ, ഞങ്ങൾ ശ്രദ്ധയോടെ ഉംറ യാത്രകൾ ആസൂത്രണം ചെയ്യുന്നു.",
+              })}
             </p>
           </div>
 
           <div className="text-sm">
-            <div className="uppercase tracking-widest-lg text-[11px] text-gold/80 mb-4">Navigate</div>
+            <div className="uppercase tracking-widest-lg text-[11px] text-gold/80 mb-4">
+              {t({ en: "Navigate", ml: "മെനു" })}
+            </div>
             <ul className="space-y-2 font-normal">
-              <li><Link to="/" className="hover:text-gold transition-colors">Home</Link></li>
-              <li><Link to="/about" className="hover:text-gold transition-colors">About Us</Link></li>
-              <li><Link to="/packages" className="hover:text-gold transition-colors">Packages</Link></li>
-              <li><Link to="/build" className="hover:text-gold transition-colors">Build a Package</Link></li>
-              <li><Link to="/contact" className="hover:text-gold transition-colors">Contact</Link></li>
+              <li><Link to="/" className="hover:text-gold transition-colors">{t({ en: "Home", ml: "ഹോം" })}</Link></li>
+              <li><Link to="/about" className="hover:text-gold transition-colors">{t({ en: "About Us", ml: "ഞങ്ങളെക്കുറിച്ച്" })}</Link></li>
+              <li><Link to="/packages" className="hover:text-gold transition-colors">{t({ en: "Packages", ml: "പാക്കേജുകൾ" })}</Link></li>
+              <li><Link to="/build" className="hover:text-gold transition-colors">{t({ en: "Build a Package", ml: "പാക്കേജ് തയ്യാറാക്കൂ" })}</Link></li>
+              <li><Link to="/contact" className="hover:text-gold transition-colors">{t({ en: "Contact", ml: "ബന്ധപ്പെടുക" })}</Link></li>
             </ul>
           </div>
 
           <div className="text-sm">
-            <div className="uppercase tracking-widest-lg text-[11px] text-gold/80 mb-4">Direct Line</div>
+            <div className="uppercase tracking-widest-lg text-[11px] text-gold/80 mb-4">
+              {t({ en: "Direct Line", ml: "നേരിട്ട് ബന്ധപ്പെടാൻ" })}
+            </div>
             <ul className="space-y-2 font-normal text-cream/70">
               <li>
                 <a href="tel:+966548609600" className="hover:text-gold transition-colors">+966 54 860 9600</a>
@@ -39,14 +48,17 @@ export default function Footer() {
                   concierge@alwafd.travel
                 </a>
               </li>
-              <li className="text-cream/50">Jeddah &middot; Makkah &middot; Madeenah</li>
+              <li className="text-cream/50">{t({ en: "Jeddah · Makkah · Madeenah", ml: "ജിദ്ദ · മക്ക · മദീന" })}</li>
             </ul>
           </div>
         </div>
 
         <div className="rule-gold my-10 opacity-30" />
         <p className="text-[11px] tracking-wide text-cream/40 font-normal">
-          &copy; {new Date().getFullYear()} Al Wafd Travel &amp; Umrah Services. All rights reserved.
+          {t({
+            en: `© ${new Date().getFullYear()} Al Wafd Travel & Umrah Services. All rights reserved.`,
+            ml: `© ${new Date().getFullYear()} അൽ വഫ്ദ് ട്രാവൽ & ഉംറ സർവീസസ്. എല്ലാ അവകാശങ്ങളും സംരക്ഷിതം.`,
+          })}
         </p>
       </div>
     </footer>

@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useT, type Bi } from "../lib/i18n";
+import LanguageToggle from "./LanguageToggle";
 
-const LINKS = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/packages", label: "Packages" },
-  { to: "/build", label: "Build a Package" },
-  { to: "/contact", label: "Contact" },
+const LINKS: { to: string; label: Bi }[] = [
+  { to: "/", label: { en: "Home", ml: "ഹോം" } },
+  { to: "/about", label: { en: "About", ml: "ഞങ്ങളെക്കുറിച്ച്" } },
+  { to: "/packages", label: { en: "Packages", ml: "പാക്കേജുകൾ" } },
+  { to: "/build", label: { en: "Build a Package", ml: "പാക്കേജ് തയ്യാറാക്കൂ" } },
+  { to: "/contact", label: { en: "Contact", ml: "ബന്ധപ്പെടുക" } },
 ];
+
+const DELEGATION: Bi = { en: "The Delegation", ml: "പ്രതിനിധി സംഘം" };
 
 // Routes that open on a full-bleed dark hero, so the transparent navbar
 // needs light text until the user scrolls past it onto the cream page body.
@@ -18,6 +22,7 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const t = useT();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -60,45 +65,52 @@ export default function Navbar() {
                 onDarkHero ? "text-gold" : "text-gold-dark"
               }`}
             >
-              The Delegation
+              {t(DELEGATION)}
             </span>
           </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-10">
-          {LINKS.map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              className={({ isActive }) =>
-                `text-[15px] font-medium tracking-wide font-sans transition-colors duration-500 ${
-                  isActive
-                    ? onDarkHero
-                      ? "text-gold"
-                      : "text-maroon"
-                    : onDarkHero
-                      ? "text-cream/80 hover:text-gold"
-                      : "text-ink/75 hover:text-maroon"
-                }`
-              }
-            >
-              {l.label}
-            </NavLink>
-          ))}
-        </nav>
+        <div className="flex items-center gap-6 md:gap-8">
+          <nav className="hidden md:flex items-center gap-8">
+            {LINKS.map((l) => (
+              <NavLink
+                key={l.to}
+                to={l.to}
+                className={({ isActive }) =>
+                  `text-[15px] font-medium tracking-wide font-sans transition-colors duration-500 ${
+                    isActive
+                      ? onDarkHero
+                        ? "text-gold"
+                        : "text-maroon"
+                      : onDarkHero
+                        ? "text-cream/80 hover:text-gold"
+                        : "text-ink/75 hover:text-maroon"
+                  }`
+                }
+              >
+                {t(l.label)}
+              </NavLink>
+            ))}
+          </nav>
 
-        <button
-          aria-label="Toggle menu"
-          className="md:hidden flex flex-col gap-1.5 w-8 h-8 items-end justify-center"
-          onClick={() => setOpen((o) => !o)}
-        >
-          <span
-            className={`h-px transition-all duration-300 ${onDarkHero ? "bg-cream" : "bg-maroon"} ${open ? "w-6 rotate-45 translate-y-[3px]" : "w-6"}`}
-          />
-          <span
-            className={`h-px transition-all duration-300 ${onDarkHero ? "bg-cream" : "bg-maroon"} ${open ? "w-6 -rotate-45 -translate-y-[3px]" : "w-4"}`}
-          />
-        </button>
+          <LanguageToggle dark={onDarkHero} className="hidden md:inline-flex" />
+
+          {/* Small, always-visible so mobile users don't need to open the menu to switch language. */}
+          <LanguageToggle dark={onDarkHero} className="md:hidden" />
+
+          <button
+            aria-label="Toggle menu"
+            className="md:hidden flex flex-col gap-1.5 w-8 h-8 items-end justify-center"
+            onClick={() => setOpen((o) => !o)}
+          >
+            <span
+              className={`h-px transition-all duration-300 ${onDarkHero ? "bg-cream" : "bg-maroon"} ${open ? "w-6 rotate-45 translate-y-[3px]" : "w-6"}`}
+            />
+            <span
+              className={`h-px transition-all duration-300 ${onDarkHero ? "bg-cream" : "bg-maroon"} ${open ? "w-6 -rotate-45 -translate-y-[3px]" : "w-4"}`}
+            />
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -122,7 +134,7 @@ export default function Navbar() {
                     }`
                   }
                 >
-                  {l.label}
+                  {t(l.label)}
                 </NavLink>
               ))}
             </div>

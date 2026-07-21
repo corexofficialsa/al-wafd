@@ -1,7 +1,17 @@
 import { AnimatePresence, motion } from "framer-motion";
 import type { RoomTier } from "../lib/whatsapp";
+import { useT } from "../lib/i18n";
 
 const OPTIONS: RoomTier[] = ["None", "1 Star", "2 Star", "3 Star", "4 Star", "5 Star"];
+
+const OPTION_LABEL: Record<RoomTier, { en: string; ml: string }> = {
+  None: { en: "None", ml: "ഒന്നുമില്ല" },
+  "1 Star": { en: "1 Star", ml: "1 സ്റ്റാർ" },
+  "2 Star": { en: "2 Star", ml: "2 സ്റ്റാർ" },
+  "3 Star": { en: "3 Star", ml: "3 സ്റ്റാർ" },
+  "4 Star": { en: "4 Star", ml: "4 സ്റ്റാർ" },
+  "5 Star": { en: "5 Star", ml: "5 സ്റ്റാർ" },
+};
 
 interface RoomSelectProps {
   value: RoomTier;
@@ -25,6 +35,7 @@ export default function RoomSelect({
   onCheckOutChange,
 }: RoomSelectProps) {
   const booked = value !== "None";
+  const t = useT();
 
   return (
     <div className="py-5">
@@ -38,7 +49,7 @@ export default function RoomSelect({
         >
           {OPTIONS.map((o) => (
             <option key={o} value={o}>
-              {o}
+              {t(OPTION_LABEL[o])}
             </option>
           ))}
         </select>
@@ -63,7 +74,7 @@ export default function RoomSelect({
             <div className="grid grid-cols-2 gap-4 pt-4">
               <div>
                 <label className="block text-[11px] tracking-widest-lg uppercase text-maroon/50 mb-2">
-                  Check-in
+                  {t({ en: "Check-in", ml: "ചെക്ക്-ഇൻ" })}
                 </label>
                 <input
                   type="date"
@@ -74,7 +85,7 @@ export default function RoomSelect({
               </div>
               <div>
                 <label className="block text-[11px] tracking-widest-lg uppercase text-maroon/50 mb-2">
-                  Check-out
+                  {t({ en: "Check-out", ml: "ചെക്ക്-ഔട്ട്" })}
                 </label>
                 <input
                   type="date"

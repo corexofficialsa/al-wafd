@@ -2,19 +2,28 @@ import { Link } from "react-router-dom";
 import Reveal from "../components/Reveal";
 import OrnamentDivider from "../components/OrnamentDivider";
 import { PRESET_PACKAGES, presetWhatsappUrl } from "../lib/presets";
+import { useT, useLanguage } from "../lib/i18n";
 
 export default function Packages() {
+  const t = useT();
+  const { lang } = useLanguage();
+
   return (
     <div>
       <section className="pt-40 pb-20 md:pt-48 md:pb-24 px-6 text-center">
         <Reveal>
-          <p className="text-gold-dark text-xs tracking-widest-lg uppercase mb-5">Ready-Made Packages</p>
+          <p className="text-gold-dark text-xs tracking-widest-lg uppercase mb-5">
+            {t({ en: "Ready-Made Packages", ml: "തയ്യാറായ പാക്കേജുകൾ" })}
+          </p>
           <h1 className="text-4xl md:text-6xl text-maroon max-w-3xl mx-auto text-balance leading-tight">
-            Three Packages to Choose From
+            {t({ en: "Three Packages to Choose From", ml: "തിരഞ്ഞെടുക്കാൻ മൂന്ന് പാക്കേജുകൾ" })}
           </h1>
           <OrnamentDivider className="mt-10" />
           <p className="mt-8 text-ink/55 font-normal max-w-xl mx-auto leading-relaxed">
-            Pick one of the packages below, or build your own from scratch.
+            {t({
+              en: "Pick one of the packages below, or build your own from scratch.",
+              ml: "താഴെയുള്ള ഒരു പാക്കേജ് തിരഞ്ഞെടുക്കൂ, അല്ലെങ്കിൽ സ്വന്തമായി ഒന്ന് തയ്യാറാക്കൂ.",
+            })}
           </p>
         </Reveal>
       </section>
@@ -32,29 +41,29 @@ export default function Packages() {
               >
                 {p.featured && (
                   <span className="absolute -top-3 left-10 bg-gold text-maroon-dark text-[10px] tracking-widest-lg uppercase px-3 py-1 font-medium">
-                    Most Chosen
+                    {t({ en: "Most Chosen", ml: "ഏറ്റവും തിരഞ്ഞെടുക്കുന്നത്" })}
                   </span>
                 )}
                 <p className={`text-[11px] tracking-widest-lg uppercase mb-3 ${p.featured ? "text-gold" : "text-gold-dark"}`}>
-                  {p.tag}
+                  {t(p.tag)}
                 </p>
-                <h2 className={`text-2xl font-serif mb-4 ${p.featured ? "text-cream" : "text-maroon"}`}>{p.name}</h2>
+                <h2 className={`text-2xl font-serif mb-4 ${p.featured ? "text-cream" : "text-maroon"}`}>{t(p.name)}</h2>
 
                 <p className={`text-sm font-normal leading-relaxed mb-8 ${p.featured ? "text-cream/70" : "text-ink/55"}`}>
-                  {p.blurb}
+                  {t(p.blurb)}
                 </p>
 
                 <ul className="space-y-3 mb-10 flex-1">
                   {p.features.map((f) => (
-                    <li key={f} className="flex items-start gap-3 text-sm font-normal">
+                    <li key={f.en} className="flex items-start gap-3 text-sm font-normal">
                       <span className={`mt-1.5 w-1 h-1 rounded-full shrink-0 ${p.featured ? "bg-gold" : "bg-maroon"}`} />
-                      <span className={p.featured ? "text-cream/85" : "text-ink/70"}>{f}</span>
+                      <span className={p.featured ? "text-cream/85" : "text-ink/70"}>{t(f)}</span>
                     </li>
                   ))}
                 </ul>
 
                 <a
-                  href={presetWhatsappUrl(p)}
+                  href={presetWhatsappUrl(p, lang)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`text-center py-4 text-sm tracking-widest-lg uppercase font-sans transition-colors ${
@@ -63,7 +72,7 @@ export default function Packages() {
                       : "bg-maroon text-cream hover:bg-maroon-light"
                   }`}
                 >
-                  Enquire Now
+                  {t({ en: "Enquire Now", ml: "അന്വേഷിക്കൂ" })}
                 </a>
               </div>
             </Reveal>
@@ -73,16 +82,20 @@ export default function Packages() {
 
       <section className="pb-28 md:pb-36 px-6 text-center">
         <Reveal>
-          <h2 className="text-2xl md:text-3xl text-maroon mb-6">None of these quite right?</h2>
+          <h2 className="text-2xl md:text-3xl text-maroon mb-6">
+            {t({ en: "None of these quite right?", ml: "ഇവയൊന്നും ശരിയല്ലേ?" })}
+          </h2>
           <p className="text-ink/55 font-normal mb-8 max-w-md mx-auto">
-            Build your own package. Choose your hotel rating, guided visits,
-            visa, and flights — one by one.
+            {t({
+              en: "Build your own package. Choose your hotel rating, guided visits, visa, and flights — one by one.",
+              ml: "സ്വന്തമായി ഒരു പാക്കേജ് തയ്യാറാക്കൂ. ഹോട്ടൽ റേറ്റിംഗ്, ഗൈഡഡ് സന്ദർശനങ്ങൾ, വിസ, ഫ്ലൈറ്റ് എന്നിവ ഓരോന്നായി തിരഞ്ഞെടുക്കൂ.",
+            })}
           </p>
           <Link
             to="/build"
             className="inline-block px-10 py-4 border border-maroon text-maroon text-sm tracking-widest-lg uppercase font-sans hover:bg-maroon hover:text-cream transition-colors"
           >
-            Build a Package
+            {t({ en: "Build a Package", ml: "പാക്കേജ് തയ്യാറാക്കൂ" })}
           </Link>
         </Reveal>
       </section>
