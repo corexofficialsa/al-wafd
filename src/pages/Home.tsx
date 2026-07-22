@@ -6,6 +6,11 @@ import OrnamentDivider from "../components/OrnamentDivider";
 import { PRESET_PACKAGES } from "../lib/presets";
 import { useT, type Bi } from "../lib/i18n";
 
+const STATS: { value: string; label: Bi }[] = [
+  { value: "30,000+", label: { en: "Happy Customers Served", ml: "സന്തുഷ്ട ഉപഭോക്താക്കൾ" } },
+  { value: "8+", label: { en: "Years of Experience", ml: "വർഷത്തെ അനുഭവപരിചയം" } },
+];
+
 const SERVICES: { title: Bi; desc: Bi }[] = [
   {
     title: { en: "Visa Processing", ml: "വിസ പ്രോസസ്സിംഗ്" },
@@ -107,6 +112,18 @@ export default function Home() {
           <div className="w-px h-12 bg-gradient-to-b from-transparent via-gold to-transparent" />
         </motion.div>
       </ParallaxSurface>
+
+      {/* Trust bar */}
+      <section className="py-16 md:py-20 px-6 bg-maroon">
+        <div className="max-w-3xl mx-auto grid grid-cols-2 divide-x divide-cream/15 text-center">
+          {STATS.map((s, i) => (
+            <Reveal key={s.label.en} delay={i * 0.1}>
+              <p className="font-serif font-semibold text-gold text-4xl md:text-6xl mb-2">{s.value}</p>
+              <p className="text-cream/70 text-[11px] md:text-xs tracking-widest-lg uppercase">{t(s.label)}</p>
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
       {/* Philosophy */}
       <section className="py-28 md:py-36 px-6">
