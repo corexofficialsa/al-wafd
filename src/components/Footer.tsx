@@ -54,12 +54,20 @@ export default function Footer() {
         </div>
 
         <div className="rule-gold my-10 opacity-30" />
-        <p className="text-[11px] tracking-wide text-cream/40 font-normal">
-          {t({
-            en: `© ${new Date().getFullYear()} Al Wafd Travel & Umrah Services. All rights reserved.`,
-            ml: `© ${new Date().getFullYear()} അൽ വഫ്ദ് ട്രാവൽ & ഉംറ സർവീസസ്. എല്ലാ അവകാശങ്ങളും സംരക്ഷിതം.`,
-          })}
-        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-[11px] tracking-wide text-cream/40 font-normal">
+            {t({
+              en: `© ${new Date().getFullYear()} Al Wafd Travel & Umrah Services. All rights reserved.`,
+              ml: `© ${new Date().getFullYear()} അൽ വഫ്ദ് ട്രാവൽ & ഉംറ സർവീസസ്. എല്ലാ അവകാശങ്ങളും സംരക്ഷിതം.`,
+            })}
+          </p>
+          <Link
+            to="/admin/login"
+            className="text-[10px] tracking-widest-lg uppercase text-cream/25 hover:text-cream/60 transition-colors"
+          >
+            Admin
+          </Link>
+        </div>
       </div>
     </footer>
   );

@@ -11,6 +11,7 @@ import {
   type CustomSelection,
 } from "../lib/whatsapp";
 import { useT, useLanguage } from "../lib/i18n";
+import { useEnquireFlow } from "../lib/enquireFlow";
 
 function selectionCount(s: CustomSelection): number {
   let n = 0;
@@ -29,6 +30,7 @@ export default function PackageBuilder() {
   const [selection, setSelection] = useState<CustomSelection>(defaultSelection);
   const t = useT();
   const { lang } = useLanguage();
+  const { requestEnquire } = useEnquireFlow();
 
   const set = <K extends keyof CustomSelection>(key: K, value: CustomSelection[K]) =>
     setSelection((prev) => ({ ...prev, [key]: value }));
@@ -179,14 +181,13 @@ export default function PackageBuilder() {
                 {t({ en: "Send your choices to our team.", ml: "നിങ്ങളുടെ തിരഞ്ഞെടുപ്പുകൾ ഞങ്ങളുടെ ടീമിന് അയക്കൂ." })}
               </p>
             </div>
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              type="button"
+              onClick={() => requestEnquire({ source: "custom-builder", whatsappUrl })}
               className="shrink-0 px-10 py-4 bg-gold text-maroon-dark text-sm tracking-widest-lg uppercase font-sans font-medium hover:bg-gold-light transition-colors whitespace-nowrap"
             >
               {t({ en: "Enquire Now", ml: "അന്വേഷിക്കൂ" })}
-            </a>
+            </button>
           </motion.div>
         </div>
       </section>

@@ -1,10 +1,15 @@
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import FloatingContact from "./FloatingContact";
+import { trackWebsiteVisit } from "../lib/analytics";
 
 export default function Layout({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    void trackWebsiteVisit();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-cream">
       <Navbar />

@@ -3,6 +3,7 @@ import Reveal from "../components/Reveal";
 import OrnamentDivider from "../components/OrnamentDivider";
 import { contactFormWhatsappUrl } from "../lib/whatsapp";
 import { useT, useLanguage } from "../lib/i18n";
+import { saveCustomer, trackEnquireClick } from "../lib/analytics";
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -16,6 +17,8 @@ export default function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!canSubmit) return;
+    void saveCustomer({ name, phone, source: "contact", detail: message });
+    void trackEnquireClick();
     window.open(contactFormWhatsappUrl({ name, phone, message }, lang), "_blank", "noopener,noreferrer");
   };
 

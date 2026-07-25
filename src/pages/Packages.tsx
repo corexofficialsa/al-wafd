@@ -3,10 +3,13 @@ import Reveal from "../components/Reveal";
 import OrnamentDivider from "../components/OrnamentDivider";
 import { PRESET_PACKAGES, presetWhatsappUrl } from "../lib/presets";
 import { useT, useLanguage } from "../lib/i18n";
+import { useEnquireFlow } from "../lib/enquireFlow";
+import type { EnquirySource } from "../lib/analytics";
 
 export default function Packages() {
   const t = useT();
   const { lang } = useLanguage();
+  const { requestEnquire } = useEnquireFlow();
 
   return (
     <div>
@@ -33,14 +36,14 @@ export default function Packages() {
           {PRESET_PACKAGES.map((p, i) => (
             <Reveal key={p.id} delay={i * 0.1} className="h-full">
               <div
-                className={`h-full flex flex-col pl-20 pr-6 py-10 sm:p-10 border transition-colors ${
+                className={`h-full flex flex-col text-center sm:text-left pl-20 pr-6 py-10 sm:p-10 border transition-colors ${
                   p.featured
                     ? "border-gold bg-maroon text-cream relative"
                     : "border-maroon/15 bg-white/40 text-ink hover:border-gold/60"
                 }`}
               >
                 {p.featured && (
-                  <span className="absolute -top-3 left-10 bg-gold text-maroon-dark text-[10px] tracking-widest-lg uppercase px-3 py-1 font-medium">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 sm:left-10 sm:translate-x-0 bg-gold text-maroon-dark text-[10px] tracking-widest-lg uppercase px-3 py-1 font-medium whitespace-nowrap">
                     {t({ en: "Most Chosen", ml: "ഏറ്റവും തിരഞ്ഞെടുക്കുന്നത്" })}
                   </span>
                 )}
@@ -55,17 +58,22 @@ export default function Packages() {
 
                 <ul className="space-y-3 mb-10 flex-1">
                   {p.features.map((f) => (
-                    <li key={f.en} className="flex items-start gap-3 text-sm font-normal">
+                    <li key={f.en} className="flex items-start justify-center sm:justify-start gap-3 text-sm font-normal">
                       <span className={`mt-1.5 w-1 h-1 rounded-full shrink-0 ${p.featured ? "bg-gold" : "bg-maroon"}`} />
                       <span className={p.featured ? "text-cream/85" : "text-ink/70"}>{t(f)}</span>
                     </li>
                   ))}
                 </ul>
 
-                <a
-                  href={presetWhatsappUrl(p, lang)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  onClick={() =>
+                    requestEnquire({
+                      source: p.id as EnquirySource,
+                      whatsappUrl: presetWhatsappUrl(p, lang),
+                      detail: p.name.en,
+                    })
+                  }
                   className={`text-center py-4 text-sm tracking-widest-lg uppercase font-sans transition-colors ${
                     p.featured
                       ? "bg-gold text-maroon-dark hover:bg-gold-light"
@@ -73,7 +81,7 @@ export default function Packages() {
                   }`}
                 >
                   {t({ en: "Enquire Now", ml: "അന്വേഷിക്കൂ" })}
-                </a>
+                </button>
               </div>
             </Reveal>
           ))}

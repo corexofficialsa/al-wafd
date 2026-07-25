@@ -1,12 +1,16 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { LanguageProvider } from "./lib/i18n";
+import { AdminAuthProvider } from "./lib/adminAuth";
+import { EnquireFlowProvider } from "./lib/enquireFlow";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Packages from "./pages/Packages";
 import PackageBuilder from "./pages/PackageBuilder";
 import Contact from "./pages/Contact";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 function scrollToTop() {
   window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
@@ -31,14 +35,35 @@ function AnimatedRoutes() {
   );
 }
 
+function AppInner() {
+  const location = useLocation();
+
+  if (location.pathname.startsWith("/admin")) {
+    return (
+      <Routes>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+      </Routes>
+    );
+  }
+
+  return (
+    <EnquireFlowProvider>
+      <Layout>
+        <AnimatedRoutes />
+      </Layout>
+    </EnquireFlowProvider>
+  );
+}
+
 export default function App() {
   return (
     <LanguageProvider>
-      <BrowserRouter>
-        <Layout>
-          <AnimatedRoutes />
-        </Layout>
-      </BrowserRouter>
+      <AdminAuthProvider>
+        <BrowserRouter>
+          <AppInner />
+        </BrowserRouter>
+      </AdminAuthProvider>
     </LanguageProvider>
   );
 }
