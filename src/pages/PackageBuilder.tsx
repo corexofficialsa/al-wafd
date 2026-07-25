@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Reveal from "../components/Reveal";
 import OrnamentDivider from "../components/OrnamentDivider";
 import Toggle from "../components/Toggle";
@@ -92,6 +92,44 @@ export default function PackageBuilder() {
                 label={t({ en: "Flight Ticket", ml: "ഫ്ലൈറ്റ് ടിക്കറ്റ്" })}
                 description={t({ en: "We book your flight there and back.", ml: "പോക്കും വരവും ഫ്ലൈറ്റ് ഞങ്ങൾ ബുക്ക് ചെയ്യും." })}
               />
+              <AnimatePresence initial={false}>
+                {selection.ticket && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="grid grid-cols-2 gap-4 pb-5">
+                      <div>
+                        <label className="block text-[11px] tracking-widest-lg uppercase text-maroon/50 mb-2">
+                          {t({ en: "From Airport", ml: "ഏത് എയർപോർട്ടിൽ നിന്ന്" })}
+                        </label>
+                        <input
+                          type="text"
+                          value={selection.flightFrom}
+                          onChange={(e) => set("flightFrom", e.target.value)}
+                          placeholder={t({ en: "e.g. Kochi (COK)", ml: "ഉദാ. കൊച്ചി (COK)" })}
+                          className="w-full bg-transparent border border-maroon/20 focus:border-gold text-ink px-3 py-2.5 text-sm outline-none transition-colors"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] tracking-widest-lg uppercase text-maroon/50 mb-2">
+                          {t({ en: "To Airport", ml: "ഏത് എയർപോർട്ടിലേക്ക്" })}
+                        </label>
+                        <input
+                          type="text"
+                          value={selection.flightTo}
+                          onChange={(e) => set("flightTo", e.target.value)}
+                          placeholder={t({ en: "e.g. Jeddah (JED)", ml: "ഉദാ. ജിദ്ദ (JED)" })}
+                          className="w-full bg-transparent border border-maroon/20 focus:border-gold text-ink px-3 py-2.5 text-sm outline-none transition-colors"
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
               <Toggle
                 checked={selection.airportPickup}
                 onChange={(v) => set("airportPickup", v)}

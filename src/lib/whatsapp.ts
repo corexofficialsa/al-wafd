@@ -8,6 +8,8 @@ export interface CustomSelection {
   quantity: number;
   visa: boolean;
   ticket: boolean;
+  flightFrom: string;
+  flightTo: string;
   airportPickup: boolean;
   makkahRoom: RoomTier;
   makkahCheckIn: string;
@@ -24,6 +26,8 @@ export const defaultSelection: CustomSelection = {
   quantity: 1,
   visa: false,
   ticket: false,
+  flightFrom: "",
+  flightTo: "",
   airportPickup: false,
   makkahRoom: "None",
   makkahCheckIn: "",
@@ -69,9 +73,11 @@ export function customPackageMessage(s: CustomSelection, lang: Lang): string {
       `പാക്കേജുകളുടെ എണ്ണം: ${s.quantity}`,
       `വിസ: ${yn(s.visa, lang)}`,
       `ടിക്കറ്റ്: ${yn(s.ticket, lang)}`,
-      `എയർപോർട്ട് പിക്കപ്പ്: ${yn(s.airportPickup, lang)}`,
-      `മക്ക റൂം: ${roomLabel(s.makkahRoom, lang)}`,
     ];
+    if (s.ticket && s.flightFrom) lines.push(`ഫ്ലൈറ്റ് എവിടെ നിന്ന്: ${s.flightFrom}`);
+    if (s.ticket && s.flightTo) lines.push(`ഫ്ലൈറ്റ് എവിടേക്ക്: ${s.flightTo}`);
+    lines.push(`എയർപോർട്ട് പിക്കപ്പ്: ${yn(s.airportPickup, lang)}`);
+    lines.push(`മക്ക റൂം: ${roomLabel(s.makkahRoom, lang)}`);
     if (s.makkahRoom !== "None" && s.makkahCheckIn) lines.push(`മക്ക ചെക്ക്-ഇൻ: ${formatDate(s.makkahCheckIn)}`);
     if (s.makkahRoom !== "None" && s.makkahCheckOut) lines.push(`മക്ക ചെക്ക്-ഔട്ട്: ${formatDate(s.makkahCheckOut)}`);
     lines.push(`മക്ക സിയാറ: ${yn(s.makkahZiyara, lang)}`);
@@ -92,9 +98,11 @@ export function customPackageMessage(s: CustomSelection, lang: Lang): string {
     `Number of Packages: ${s.quantity}`,
     `Visa: ${yn(s.visa, lang)}`,
     `Ticket: ${yn(s.ticket, lang)}`,
-    `Airport Pickup: ${yn(s.airportPickup, lang)}`,
-    `Makkah Rooms: ${roomLabel(s.makkahRoom, lang)}`,
   ];
+  if (s.ticket && s.flightFrom) lines.push(`Flight From: ${s.flightFrom}`);
+  if (s.ticket && s.flightTo) lines.push(`Flight To: ${s.flightTo}`);
+  lines.push(`Airport Pickup: ${yn(s.airportPickup, lang)}`);
+  lines.push(`Makkah Rooms: ${roomLabel(s.makkahRoom, lang)}`);
   if (s.makkahRoom !== "None" && s.makkahCheckIn) lines.push(`Makkah Check-in: ${formatDate(s.makkahCheckIn)}`);
   if (s.makkahRoom !== "None" && s.makkahCheckOut) lines.push(`Makkah Check-out: ${formatDate(s.makkahCheckOut)}`);
   lines.push(`Makkah Ziyara: ${yn(s.makkahZiyara, lang)}`);

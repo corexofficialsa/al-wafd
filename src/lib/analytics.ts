@@ -12,16 +12,21 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 
-const VISIT_SESSION_KEY = "wafd-visit-counted";
+const VISIT_DEVICE_KEY = "wafd-visit-last-date";
 
 const STATS_DOC = () => doc(db!, "stats", "counters");
 
-/** Counts one visit per browser session (tab), not per page navigation. */
+function todayIso(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+/** Counts one visit per device per calendar day, not per tab/reload. */
 export async function trackWebsiteVisit(): Promise<void> {
   if (!db) return;
   if (typeof window === "undefined") return;
-  if (window.sessionStorage.getItem(VISIT_SESSION_KEY)) return;
-  window.sessionStorage.setItem(VISIT_SESSION_KEY, "1");
+  const today = todayIso();
+  if (window.localStorage.getItem(VISIT_DEVICE_KEY) === today) return;
+  window.localStorage.setItem(VISIT_DEVICE_KEY, today);
   try {
     await setDoc(STATS_DOC(), { websiteVisits: increment(1) }, { merge: true });
   } catch {

@@ -36,7 +36,7 @@ export default function HomeTab() {
     };
   }, []);
 
-  const { profit, charity, corex, parents } = splitProfit(income, expense);
+  const { profit, charity, corex, parents, ridhwan } = splitProfit(income, expense);
 
   return (
     <div className="space-y-10">
@@ -60,10 +60,11 @@ export default function HomeTab() {
 
       <div>
         <h2 className="text-xl font-serif font-medium text-maroon mb-4">Profit Split (from current profit)</h2>
-        <div className="grid sm:grid-cols-3 gap-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard label="Charity — 25%" value={formatSar(charity)} />
           <StatCard label="Corex (Muhammed) — 5%" value={formatSar(corex)} />
-          <StatCard label="Parents — 25%" value={formatSar(parents)} />
+          <StatCard label="Parents — 20%" value={formatSar(parents)} />
+          <StatCard label="Ridhwan — 50%" value={formatSar(ridhwan)} />
         </div>
       </div>
     </div>

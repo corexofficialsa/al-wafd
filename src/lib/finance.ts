@@ -1,6 +1,8 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   onSnapshot,
   orderBy,
   query,
@@ -25,6 +27,16 @@ export async function addExpense(amount: number, note: string, date: string): Pr
 export async function addIncome(amount: number, note: string, date: string): Promise<void> {
   if (!db) throw new Error("Firebase is not configured.");
   await addDoc(collection(db, "income"), { amount, note, date, createdAt: serverTimestamp() });
+}
+
+export async function deleteExpense(id: string): Promise<void> {
+  if (!db) throw new Error("Firebase is not configured.");
+  await deleteDoc(doc(db, "expenses", id));
+}
+
+export async function deleteIncome(id: string): Promise<void> {
+  if (!db) throw new Error("Firebase is not configured.");
+  await deleteDoc(doc(db, "income", id));
 }
 
 function subscribe(collectionName: "expenses" | "income", cb: (entries: FinanceEntry[]) => void) {
@@ -57,19 +69,24 @@ export interface ProfitSplit {
   charity: number;
   corex: number;
   parents: number;
-  remaining: number;
+  ridhwan: number;
 }
 
 const CHARITY_SHARE = 0.25;
 const COREX_SHARE = 0.05;
-const PARENTS_SHARE = 0.25;
+const PARENTS_SHARE = 0.2;
+// Ridhwan's share is the remaining 50% — computed below as the true
+// remainder rather than its own constant, see the comment there.
 
-/** Splits net profit per the fixed shares: 25% charity, 5% Corex (Muhammed), 25% parents. */
+/** Splits net profit per the fixed shares: 25% charity, 5% Corex (Muhammed), 20% parents, 50% Ridhwan. */
 export function splitProfit(income: number, expense: number): ProfitSplit {
   const profit = income - expense;
   const charity = profit * CHARITY_SHARE;
   const corex = profit * COREX_SHARE;
   const parents = profit * PARENTS_SHARE;
-  const remaining = profit - charity - corex - parents;
-  return { profit, charity, corex, parents, remaining };
+  // Computed as the true remainder (not profit * 0.5) so the four shares
+  // always sum exactly to profit even if the percentages above are ever
+  // tweaked and no longer add up to a clean 100%.
+  const ridhwan = profit - charity - corex - parents;
+  return { profit, charity, corex, parents, ridhwan };
 }

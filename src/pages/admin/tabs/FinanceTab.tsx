@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import {
   addExpense,
   addIncome,
+  deleteExpense,
+  deleteIncome,
   subscribeExpenses,
   subscribeIncome,
   sumEntries,
@@ -92,7 +94,28 @@ function EntryForm({
   );
 }
 
-function EntryList({ title, entries }: { title: string; entries: FinanceEntry[] }) {
+function EntryList({
+  title,
+  entries,
+  onDelete,
+}: {
+  title: string;
+  entries: FinanceEntry[];
+  onDelete: (id: string) => Promise<void>;
+}) {
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  async function handleDelete(id: string, note: string) {
+    const label = note || "this entry";
+    if (!window.confirm(`Delete ${label}? This can't be undone.`)) return;
+    setDeletingId(id);
+    try {
+      await onDelete(id);
+    } finally {
+      setDeletingId(null);
+    }
+  }
+
   return (
     <div className="border border-maroon/15 bg-white/50">
       <h3 className="text-sm font-medium tracking-wide text-maroon px-6 py-4 border-b border-maroon/10">{title}</h3>
@@ -104,7 +127,18 @@ function EntryList({ title, entries }: { title: string; entries: FinanceEntry[] 
               <p className="text-ink/80 truncate">{e.note || "—"}</p>
               <p className="text-ink/40 text-xs">{e.date}</p>
             </div>
-            <p className="text-maroon font-medium shrink-0">{formatSar(e.amount)}</p>
+            <div className="flex items-center gap-3 shrink-0">
+              <p className="text-maroon font-medium">{formatSar(e.amount)}</p>
+              <button
+                type="button"
+                aria-label={`Delete ${e.note || "entry"}`}
+                onClick={() => handleDelete(e.id, e.note)}
+                disabled={deletingId === e.id}
+                className="text-ink/30 hover:text-red-700 transition-colors text-lg leading-none disabled:opacity-30"
+              >
+                &times;
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -127,7 +161,7 @@ export default function FinanceTab() {
 
   const income = sumEntries(incomeEntries);
   const expense = sumEntries(expenseEntries);
-  const { profit, charity, corex, parents, remaining } = splitProfit(income, expense);
+  const { profit, charity, corex, parents, ridhwan } = splitProfit(income, expense);
 
   return (
     <div className="space-y-10">
@@ -158,12 +192,12 @@ export default function FinanceTab() {
             <p className="text-2xl font-serif font-semibold text-maroon">{formatSar(corex)}</p>
           </div>
           <div className="p-6 border border-maroon/15 bg-white/50">
-            <p className="text-[11px] tracking-widest-lg uppercase text-gold-dark mb-2">Parents · 25%</p>
+            <p className="text-[11px] tracking-widest-lg uppercase text-gold-dark mb-2">Parents · 20%</p>
             <p className="text-2xl font-serif font-semibold text-maroon">{formatSar(parents)}</p>
           </div>
           <div className="p-6 border border-maroon/15 bg-white/50">
-            <p className="text-[11px] tracking-widest-lg uppercase text-ink/40 mb-2">Remaining · 45%</p>
-            <p className="text-2xl font-serif font-semibold text-ink/70">{formatSar(remaining)}</p>
+            <p className="text-[11px] tracking-widest-lg uppercase text-gold-dark mb-2">Ridhwan · 50%</p>
+            <p className="text-2xl font-serif font-semibold text-maroon">{formatSar(ridhwan)}</p>
           </div>
         </div>
       </div>
@@ -174,8 +208,8 @@ export default function FinanceTab() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
-        <EntryList title="Income History" entries={incomeEntries} />
-        <EntryList title="Expense History" entries={expenseEntries} />
+        <EntryList title="Income History" entries={incomeEntries} onDelete={deleteIncome} />
+        <EntryList title="Expense History" entries={expenseEntries} onDelete={deleteExpense} />
       </div>
     </div>
   );
