@@ -5,6 +5,7 @@ import OrnamentDivider from "../components/OrnamentDivider";
 import Toggle from "../components/Toggle";
 import RoomSelect from "../components/RoomSelect";
 import QuantityStepper from "../components/QuantityStepper";
+import AirportAutocomplete from "../components/AirportAutocomplete";
 import {
   customPackageWhatsappUrl,
   defaultSelection,
@@ -94,38 +95,28 @@ export default function PackageBuilder() {
               />
               <AnimatePresence initial={false}>
                 {selection.ticket && (
+                  // No height/overflow-hidden animation here on purpose: the
+                  // autocomplete dropdown below needs to visually escape this
+                  // block, which overflow-hidden would otherwise clip.
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                    className="overflow-hidden"
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                   >
                     <div className="grid grid-cols-2 gap-4 pb-5">
-                      <div>
-                        <label className="block text-[11px] tracking-widest-lg uppercase text-maroon/50 mb-2">
-                          {t({ en: "From Airport", ml: "ഏത് എയർപോർട്ടിൽ നിന്ന്" })}
-                        </label>
-                        <input
-                          type="text"
-                          value={selection.flightFrom}
-                          onChange={(e) => set("flightFrom", e.target.value)}
-                          placeholder={t({ en: "e.g. Kochi (COK)", ml: "ഉദാ. കൊച്ചി (COK)" })}
-                          className="w-full bg-transparent border border-maroon/20 focus:border-gold text-ink px-3 py-2.5 text-sm outline-none transition-colors"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[11px] tracking-widest-lg uppercase text-maroon/50 mb-2">
-                          {t({ en: "To Airport", ml: "ഏത് എയർപോർട്ടിലേക്ക്" })}
-                        </label>
-                        <input
-                          type="text"
-                          value={selection.flightTo}
-                          onChange={(e) => set("flightTo", e.target.value)}
-                          placeholder={t({ en: "e.g. Jeddah (JED)", ml: "ഉദാ. ജിദ്ദ (JED)" })}
-                          className="w-full bg-transparent border border-maroon/20 focus:border-gold text-ink px-3 py-2.5 text-sm outline-none transition-colors"
-                        />
-                      </div>
+                      <AirportAutocomplete
+                        value={selection.flightFrom}
+                        onChange={(v) => set("flightFrom", v)}
+                        label={t({ en: "From Airport", ml: "ഏത് എയർപോർട്ടിൽ നിന്ന്" })}
+                        placeholder={t({ en: "Search city or airport code", ml: "നഗരം അല്ലെങ്കിൽ കോഡ് തിരയൂ" })}
+                      />
+                      <AirportAutocomplete
+                        value={selection.flightTo}
+                        onChange={(v) => set("flightTo", v)}
+                        label={t({ en: "To Airport", ml: "ഏത് എയർപോർട്ടിലേക്ക്" })}
+                        placeholder={t({ en: "Search city or airport code", ml: "നഗരം അല്ലെങ്കിൽ കോഡ് തിരയൂ" })}
+                      />
                     </div>
                   </motion.div>
                 )}
