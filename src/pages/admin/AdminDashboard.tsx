@@ -5,16 +5,16 @@ import HomeTab from "./tabs/HomeTab";
 import FinanceTab from "./tabs/FinanceTab";
 import CustomersTab from "./tabs/CustomersTab";
 import OrdersTab from "./tabs/OrdersTab";
-import InvoiceTab from "./tabs/InvoiceTab";
+import ReceiptTab from "./tabs/ReceiptTab";
 
-type Tab = "home" | "finance" | "customers" | "orders" | "invoice";
+type Tab = "home" | "finance" | "customers" | "orders" | "receipt";
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "home", label: "Home" },
   { id: "finance", label: "Finance" },
   { id: "customers", label: "Customers" },
   { id: "orders", label: "Orders" },
-  { id: "invoice", label: "Invoice" },
+  { id: "receipt", label: "Receipt" },
 ];
 
 export default function AdminDashboard() {
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
         {tab === "finance" && <FinanceTab />}
         {tab === "customers" && <CustomersTab />}
         {tab === "orders" && <OrdersTab />}
-        {tab === "invoice" && <InvoiceTab />}
+        {tab === "receipt" && <ReceiptTab />}
       </main>
     </div>
   );

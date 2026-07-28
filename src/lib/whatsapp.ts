@@ -159,7 +159,7 @@ export function customSelectionToOrderDetails(s: CustomSelection): { label: stri
   const lines: { label: string }[] = [];
   if (s.visa) lines.push({ label: "Visa Processing" });
   if (s.ticket) {
-    const route = [s.flightFrom, s.flightTo].filter(Boolean).join(" → ");
+    const route = [s.flightFrom, s.flightTo].filter(Boolean).join(" -> ");
     lines.push({ label: route ? `Flight Ticket (${route})` : "Flight Ticket" });
   }
   if (s.airportPickup) {
@@ -171,7 +171,7 @@ export function customSelectionToOrderDetails(s: CustomSelection): { label: stri
   }
   if (s.makkahZiyara) lines.push({ label: "Makkah Ziyara" });
   if (s.intercityTransport !== "None") {
-    lines.push({ label: `Makkah ⇄ Madeenah Transport — ${s.intercityTransport}` });
+    lines.push({ label: `Makkah - Madeenah Transport — ${s.intercityTransport}` });
   }
   if (s.madeenaRoom !== "None") {
     const dates = [s.madeenaCheckIn, s.madeenaCheckOut].filter(Boolean).map(formatDate).join(" – ");

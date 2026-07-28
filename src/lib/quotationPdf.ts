@@ -10,7 +10,20 @@ export interface DocumentPdfInput {
 }
 
 /**
- * Draws a quotation or invoice on top of the client's real letterhead
+ * The letterhead's standard font only supports WinAnsi (cp1252) characters —
+ * arrows like → and ⇄ aren't in it and throw at draw time, which silently
+ * killed PDF generation for any order mentioning a flight route or the
+ * Makkah⇄Madeenah transport option. Strip anything outside that range so a
+ * stray character can never take down the whole document again.
+ */
+function sanitizePdfText(text: string): string {
+  return text
+    .replace(/[→⇄⇆↔⟷]/g, "-")
+    .replace(/[^\x00-\xFF]/g, "");
+}
+
+/**
+ * Draws a quotation or receipt on top of the client's real letterhead
  * (fetched from /letterhead.pdf) rather than recreating the brand artwork
  * from scratch — guarantees an exact visual match since it's their actual
  * template.
@@ -19,7 +32,7 @@ export interface DocumentPdfInput {
  * visitor — only to the admin, the one time they generate a document.
  */
 async function generateDocumentPdf(
-  title: "QUOTATION" | "INVOICE",
+  title: "QUOTATION" | "RECEIPT",
   numberLabel: string,
   footerNote: string,
   input: DocumentPdfInput
@@ -56,10 +69,10 @@ async function generateDocumentPdf(
   page.drawText(`Date: ${input.date}`, { x: col2X, y, size: 10, font, color: INK_LIGHT });
   y -= 22;
 
-  page.drawText(`Prepared for: ${input.customerName}`, { x: marginX, y, size: 11, font: fontBold, color: INK });
+  page.drawText(`Prepared for: ${sanitizePdfText(input.customerName)}`, { x: marginX, y, size: 11, font: fontBold, color: INK });
   y -= 16;
   page.drawText(
-    `Package: ${input.sourceLabel}${input.quantity > 1 ? `  ·  ${input.quantity} pax` : ""}`,
+    `Package: ${sanitizePdfText(input.sourceLabel)}${input.quantity > 1 ? `  ·  ${input.quantity} pax` : ""}`,
     { x: marginX, y, size: 10, font, color: INK }
   );
   y -= 26;
@@ -73,7 +86,7 @@ async function generateDocumentPdf(
   let total = 0;
   for (const item of input.items) {
     if (y < 150) break; // stays clear of the footer band; realistic order sizes fit on one page
-    page.drawText(item.label, { x: marginX, y, size: 10, font, color: INK, maxWidth: col2X - marginX - 12 });
+    page.drawText(sanitizePdfText(item.label), { x: marginX, y, size: 10, font, color: INK, maxWidth: col2X - marginX - 12 });
     page.drawText(item.price.toLocaleString("en-US"), { x: col2X, y, size: 10, font, color: INK });
     total += item.price;
     y -= 20;
@@ -102,11 +115,11 @@ export function generateQuotationPdf(input: DocumentPdfInput): Promise<Blob> {
   );
 }
 
-export function generateInvoicePdf(input: DocumentPdfInput): Promise<Blob> {
+export function generateReceiptPdf(input: DocumentPdfInput): Promise<Blob> {
   return generateDocumentPdf(
-    "INVOICE",
-    "Invoice #",
-    "Thank you for booking with Al Wafd. Please settle payment as agreed.",
+    "RECEIPT",
+    "Receipt #",
+    "Thank you for booking with Al Wafd. This confirms your payment.",
     input
   );
 }

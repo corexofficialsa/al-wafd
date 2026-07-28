@@ -27,8 +27,8 @@ export interface Quotation {
   generatedAt: Timestamp | null;
 }
 
-export interface Invoice {
-  invoiceNumber: string;
+export interface Receipt {
+  receiptNumber: string;
   generatedAt: Timestamp | null;
 }
 
@@ -40,7 +40,7 @@ export interface Order {
   details: OrderDetail[];
   createdAt: Timestamp | null;
   quotation: Quotation | null;
-  invoice: Invoice | null;
+  receipt: Receipt | null;
 }
 
 export interface CreateOrderInput {
@@ -59,7 +59,7 @@ export async function createOrder(input: CreateOrderInput): Promise<void> {
       quantity: input.quantity,
       details: input.details,
       quotation: null,
-      invoice: null,
+      receipt: null,
       createdAt: serverTimestamp(),
     });
   } catch {
@@ -82,7 +82,7 @@ export function subscribeOrders(cb: (orders: Order[]) => void) {
           details: (data.details as OrderDetail[]) ?? [],
           createdAt: (data.createdAt as Timestamp) ?? null,
           quotation: (data.quotation as Quotation | null) ?? null,
-          invoice: (data.invoice as Invoice | null) ?? null,
+          receipt: (data.receipt as Receipt | null) ?? null,
         };
       })
     );
@@ -98,9 +98,9 @@ export async function saveQuotation(orderId: string, items: QuotationLineItem[])
   return total;
 }
 
-export async function saveInvoice(orderId: string, invoiceNumber: string): Promise<void> {
+export async function saveReceipt(orderId: string, receiptNumber: string): Promise<void> {
   if (!db) throw new Error("Firebase is not configured.");
   await updateDoc(doc(db, "orders", orderId), {
-    invoice: { invoiceNumber, generatedAt: serverTimestamp() },
+    receipt: { receiptNumber, generatedAt: serverTimestamp() },
   });
 }

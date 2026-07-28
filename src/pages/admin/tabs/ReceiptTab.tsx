@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { SOURCE_LABEL } from "../../../lib/analytics";
-import { subscribeOrders, saveInvoice, type Order } from "../../../lib/orders";
-import { generateInvoicePdf, downloadBlob } from "../../../lib/quotationPdf";
+import { subscribeOrders, saveReceipt, type Order } from "../../../lib/orders";
+import { generateReceiptPdf, downloadBlob } from "../../../lib/quotationPdf";
 
 function formatDate(ts: Order["createdAt"]): string {
   if (!ts) return "—";
@@ -14,11 +14,11 @@ function formatDate(ts: Order["createdAt"]): string {
   });
 }
 
-function invoiceNumber(orderId: string): string {
-  return `INV-${orderId.slice(-6).toUpperCase()}`;
+function receiptNumber(orderId: string): string {
+  return `RCT-${orderId.slice(-6).toUpperCase()}`;
 }
 
-export default function InvoiceTab() {
+export default function ReceiptTab() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [generatingId, setGeneratingId] = useState<string | null>(null);
 
@@ -30,8 +30,8 @@ export default function InvoiceTab() {
     if (!order.quotation) return;
     setGeneratingId(order.id);
     try {
-      const number = invoiceNumber(order.id);
-      const blob = await generateInvoicePdf({
+      const number = receiptNumber(order.id);
+      const blob = await generateReceiptPdf({
         documentNumber: number,
         date: new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
         customerName: order.customerName,
@@ -40,7 +40,7 @@ export default function InvoiceTab() {
         items: order.quotation.items,
       });
       downloadBlob(blob, `${number}-${order.customerName.replace(/\s+/g, "-")}.pdf`);
-      await saveInvoice(order.id, number);
+      await saveReceipt(order.id, number);
     } finally {
       setGeneratingId(null);
     }
@@ -49,7 +49,7 @@ export default function InvoiceTab() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-serif font-medium text-maroon">Invoices</h2>
+        <h2 className="text-xl font-serif font-medium text-maroon">Receipts</h2>
         <p className="text-sm text-ink/50">{quotedOrders.length} quoted</p>
       </div>
 
@@ -68,9 +68,9 @@ export default function InvoiceTab() {
                   {SOURCE_LABEL[order.source] ?? order.source}
                 </span>
                 {order.quantity > 1 && <span className="text-xs text-ink/40">{order.quantity} pax</span>}
-                {order.invoice && (
+                {order.receipt && (
                   <span className="text-[10px] tracking-widest-lg uppercase bg-maroon/15 text-maroon px-2 py-0.5">
-                    Invoiced
+                    Receipted
                   </span>
                 )}
               </div>
@@ -78,9 +78,9 @@ export default function InvoiceTab() {
               <p className="text-sm text-gold-dark font-medium">
                 Quoted total: {order.quotation?.total.toLocaleString("en-US")} SAR
               </p>
-              {order.invoice && (
+              {order.receipt && (
                 <p className="text-xs text-ink/40 mt-1">
-                  {invoiceNumber(order.id)} · generated {formatDate(order.invoice.generatedAt)}
+                  {receiptNumber(order.id)} · generated {formatDate(order.receipt.generatedAt)}
                 </p>
               )}
             </div>
@@ -92,9 +92,9 @@ export default function InvoiceTab() {
             >
               {generatingId === order.id
                 ? "Generating…"
-                : order.invoice
-                ? "Regenerate Invoice"
-                : "Generate Invoice"}
+                : order.receipt
+                ? "Regenerate Receipt"
+                : "Generate Receipt"}
             </button>
           </div>
         ))}

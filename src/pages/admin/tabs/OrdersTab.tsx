@@ -161,9 +161,9 @@ export default function OrdersTab() {
                       Quoted
                     </span>
                   )}
-                  {order.invoice && (
+                  {order.receipt && (
                     <span className="text-[10px] tracking-widest-lg uppercase bg-maroon/15 text-maroon px-2 py-0.5">
-                      Invoiced
+                      Receipted
                     </span>
                   )}
                 </div>
