@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import type { RoomTier } from "../lib/whatsapp";
+import { nightsBetween, type RoomTier } from "../lib/whatsapp";
 import { useT } from "../lib/i18n";
 
 const OPTIONS: RoomTier[] = ["None", "1 Star", "2 Star", "3 Star", "4 Star", "5 Star"];
@@ -36,6 +36,7 @@ export default function RoomSelect({
 }: RoomSelectProps) {
   const booked = value !== "None";
   const t = useT();
+  const nights = nightsBetween(checkIn, checkOut);
 
   return (
     <div className="py-5">
@@ -96,6 +97,15 @@ export default function RoomSelect({
                 />
               </div>
             </div>
+            {nights !== null && (
+              <p className="text-xs text-gold-dark font-medium pt-3">
+                {nights}{" "}
+                {t({
+                  en: nights > 1 ? "nights" : "night",
+                  ml: nights > 1 ? "രാത്രികൾ" : "രാത്രി",
+                })}
+              </p>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

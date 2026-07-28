@@ -73,11 +73,6 @@ export default function PackageBuilder() {
       ? `${selection.individuals} ${selection.individuals > 1 ? "വ്യക്തികൾ" : "വ്യക്തി"}`
       : `${selection.individuals} ${selection.individuals > 1 ? "individuals" : "individual"}`;
 
-  const nightsLabel =
-    lang === "ml"
-      ? `${selection.nights} ${selection.nights > 1 ? "രാത്രികൾ" : "രാത്രി"}`
-      : `${selection.nights} ${selection.nights > 1 ? "nights" : "night"}`;
-
   return (
     <div>
       <section className="pt-40 pb-16 md:pt-48 md:pb-20 px-6 text-center">
@@ -107,13 +102,6 @@ export default function PackageBuilder() {
                 onChange={(v) => set("individuals", v)}
                 label={t({ en: "Number of Individuals", ml: "വ്യക്തികളുടെ എണ്ണം" })}
                 description={t({ en: "How many people is this for?", ml: "എത്ര പേർക്കാണ് ഇത്?" })}
-              />
-              <QuantityStepper
-                value={selection.nights}
-                onChange={(v) => set("nights", v)}
-                label={t({ en: "Number of Nights", ml: "രാത്രികളുടെ എണ്ണം" })}
-                description={t({ en: "How many nights do you need in total?", ml: "മൊത്തം എത്ര രാത്രി വേണം?" })}
-                max={60}
               />
               <Toggle
                 checked={selection.visa}
@@ -276,8 +264,6 @@ export default function PackageBuilder() {
                 {servicesLabel}
                 {" · "}
                 {individualsLabel}
-                {" · "}
-                {nightsLabel}
               </p>
               <p className="font-serif font-medium text-xl md:text-2xl text-cream text-balance">
                 {t({ en: "Send your choices to our team.", ml: "നിങ്ങളുടെ തിരഞ്ഞെടുപ്പുകൾ ഞങ്ങളുടെ ടീമിന് അയക്കൂ." })}

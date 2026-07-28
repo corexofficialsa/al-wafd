@@ -7,7 +7,6 @@ export type TransportMode = "None" | "Train" | "Car";
 
 export interface CustomSelection {
   individuals: number;
-  nights: number;
   visa: boolean;
   ticket: boolean;
   flightFrom: string;
@@ -30,7 +29,6 @@ export interface CustomSelection {
 
 export const defaultSelection: CustomSelection = {
   individuals: 1,
-  nights: 1,
   visa: false,
   ticket: false,
   flightFrom: "",
@@ -84,6 +82,15 @@ function formatDate(iso: string): string {
   return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 }
 
+/** Nights between two ISO dates, or null if either is missing or checkout isn't after checkin. */
+export function nightsBetween(checkIn: string, checkOut: string): number | null {
+  if (!checkIn || !checkOut) return null;
+  const start = new Date(`${checkIn}T00:00:00`);
+  const end = new Date(`${checkOut}T00:00:00`);
+  const diff = Math.round((end.getTime() - start.getTime()) / 86400000);
+  return diff > 0 ? diff : null;
+}
+
 export function buildWhatsappUrl(message: string): string {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
@@ -92,7 +99,6 @@ export function customPackageMessage(s: CustomSelection, lang: Lang): string {
   if (lang === "ml") {
     const lines: string[] = [
       `വ്യക്തികളുടെ എണ്ണം: ${s.individuals}`,
-      `രാത്രികളുടെ എണ്ണം: ${s.nights}`,
       `വിസ: ${yn(s.visa, lang)}`,
       `ടിക്കറ്റ്: ${yn(s.ticket, lang)}`,
     ];
@@ -103,11 +109,19 @@ export function customPackageMessage(s: CustomSelection, lang: Lang): string {
     lines.push(`മക്ക റൂം: ${roomLabel(s.makkahRoom, lang)}`);
     if (s.makkahRoom !== "None" && s.makkahCheckIn) lines.push(`മക്ക ചെക്ക്-ഇൻ: ${formatDate(s.makkahCheckIn)}`);
     if (s.makkahRoom !== "None" && s.makkahCheckOut) lines.push(`മക്ക ചെക്ക്-ഔട്ട്: ${formatDate(s.makkahCheckOut)}`);
+    {
+      const n = nightsBetween(s.makkahCheckIn, s.makkahCheckOut);
+      if (s.makkahRoom !== "None" && n) lines.push(`മക്ക രാത്രികൾ: ${n}`);
+    }
     lines.push(`മക്ക സിയാറ: ${yn(s.makkahZiyara, lang)}`);
     if (s.intercityTransport !== "None") lines.push(`മക്ക ⇄ മദീന യാത്ര: ${transportLabel(s.intercityTransport, lang)}`);
     lines.push(`മദീന റൂം: ${roomLabel(s.madeenaRoom, lang)}`);
     if (s.madeenaRoom !== "None" && s.madeenaCheckIn) lines.push(`മദീന ചെക്ക്-ഇൻ: ${formatDate(s.madeenaCheckIn)}`);
     if (s.madeenaRoom !== "None" && s.madeenaCheckOut) lines.push(`മദീന ചെക്ക്-ഔട്ട്: ${formatDate(s.madeenaCheckOut)}`);
+    {
+      const n = nightsBetween(s.madeenaCheckIn, s.madeenaCheckOut);
+      if (s.madeenaRoom !== "None" && n) lines.push(`മദീന രാത്രികൾ: ${n}`);
+    }
     lines.push(`മദീന സിയാറ: ${yn(s.madeenaZiyara, lang)}`);
     lines.push(`എയർപോർട്ട് ഡ്രോപ്പ്-ഓഫ്: ${yn(s.airportDropoff, lang)}`);
     if (s.airportDropoff && s.airportDropoffLocation) lines.push(`ഡ്രോപ്പ്-ഓഫ് എയർപോർട്ട്: ${s.airportDropoffLocation}`);
@@ -122,7 +136,6 @@ export function customPackageMessage(s: CustomSelection, lang: Lang): string {
 
   const lines: string[] = [
     `Number of Individuals: ${s.individuals}`,
-    `Number of Nights: ${s.nights}`,
     `Visa: ${yn(s.visa, lang)}`,
     `Ticket: ${yn(s.ticket, lang)}`,
   ];
@@ -133,11 +146,19 @@ export function customPackageMessage(s: CustomSelection, lang: Lang): string {
   lines.push(`Makkah Rooms: ${roomLabel(s.makkahRoom, lang)}`);
   if (s.makkahRoom !== "None" && s.makkahCheckIn) lines.push(`Makkah Check-in: ${formatDate(s.makkahCheckIn)}`);
   if (s.makkahRoom !== "None" && s.makkahCheckOut) lines.push(`Makkah Check-out: ${formatDate(s.makkahCheckOut)}`);
+  {
+    const n = nightsBetween(s.makkahCheckIn, s.makkahCheckOut);
+    if (s.makkahRoom !== "None" && n) lines.push(`Makkah Nights: ${n}`);
+  }
   lines.push(`Makkah Ziyara: ${yn(s.makkahZiyara, lang)}`);
   if (s.intercityTransport !== "None") lines.push(`Makkah ⇄ Madeenah Transport: ${transportLabel(s.intercityTransport, lang)}`);
   lines.push(`Madeena Rooms: ${roomLabel(s.madeenaRoom, lang)}`);
   if (s.madeenaRoom !== "None" && s.madeenaCheckIn) lines.push(`Madeena Check-in: ${formatDate(s.madeenaCheckIn)}`);
   if (s.madeenaRoom !== "None" && s.madeenaCheckOut) lines.push(`Madeena Check-out: ${formatDate(s.madeenaCheckOut)}`);
+  {
+    const n = nightsBetween(s.madeenaCheckIn, s.madeenaCheckOut);
+    if (s.madeenaRoom !== "None" && n) lines.push(`Madeena Nights: ${n}`);
+  }
   lines.push(`Madeena Ziyara: ${yn(s.madeenaZiyara, lang)}`);
   lines.push(`Airport Drop-off: ${yn(s.airportDropoff, lang)}`);
   if (s.airportDropoff && s.airportDropoffLocation) lines.push(`Drop-off Airport: ${s.airportDropoffLocation}`);
@@ -167,7 +188,9 @@ export function customSelectionToOrderDetails(s: CustomSelection): { label: stri
   }
   if (s.makkahRoom !== "None") {
     const dates = [s.makkahCheckIn, s.makkahCheckOut].filter(Boolean).map(formatDate).join(" – ");
-    lines.push({ label: `Makkah Accommodation — ${s.makkahRoom}${dates ? ` (${dates})` : ""}` });
+    const nights = nightsBetween(s.makkahCheckIn, s.makkahCheckOut);
+    const suffix = [dates, nights ? `${nights} night${nights > 1 ? "s" : ""}` : ""].filter(Boolean).join(", ");
+    lines.push({ label: `Makkah Accommodation — ${s.makkahRoom}${suffix ? ` (${suffix})` : ""}` });
   }
   if (s.makkahZiyara) lines.push({ label: "Makkah Ziyara" });
   if (s.intercityTransport !== "None") {
@@ -175,7 +198,9 @@ export function customSelectionToOrderDetails(s: CustomSelection): { label: stri
   }
   if (s.madeenaRoom !== "None") {
     const dates = [s.madeenaCheckIn, s.madeenaCheckOut].filter(Boolean).map(formatDate).join(" – ");
-    lines.push({ label: `Madeena Accommodation — ${s.madeenaRoom}${dates ? ` (${dates})` : ""}` });
+    const nights = nightsBetween(s.madeenaCheckIn, s.madeenaCheckOut);
+    const suffix = [dates, nights ? `${nights} night${nights > 1 ? "s" : ""}` : ""].filter(Boolean).join(", ");
+    lines.push({ label: `Madeena Accommodation — ${s.madeenaRoom}${suffix ? ` (${suffix})` : ""}` });
   }
   if (s.madeenaZiyara) lines.push({ label: "Madeena Ziyara" });
   if (s.airportDropoff) {
