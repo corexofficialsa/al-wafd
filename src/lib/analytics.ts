@@ -50,9 +50,17 @@ export type EnquirySource =
   | "custom-builder"
   | "contact";
 
+export const SOURCE_LABEL: Record<EnquirySource, string> = {
+  economy: "Economy Package",
+  comfort: "Comfort Package",
+  "elite-5-star": "Elite 5-Star Package",
+  "custom-builder": "Custom Builder",
+  contact: "Contact Form",
+};
+
 export interface SaveCustomerInput {
   name: string;
-  phone: string;
+  phone?: string;
   source: EnquirySource;
   detail?: string;
 }
@@ -62,7 +70,7 @@ export async function saveCustomer(input: SaveCustomerInput): Promise<void> {
   try {
     await addDoc(collection(db, "customers"), {
       name: input.name,
-      phone: input.phone,
+      phone: input.phone ?? "",
       source: input.source,
       detail: input.detail ?? "",
       createdAt: serverTimestamp(),

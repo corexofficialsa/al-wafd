@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
-import { subscribeCustomers, type CustomerRecord, type EnquirySource } from "../../../lib/analytics";
-
-const SOURCE_LABEL: Record<EnquirySource, string> = {
-  economy: "Economy Package",
-  comfort: "Comfort Package",
-  "elite-5-star": "Elite 5-Star Package",
-  "custom-builder": "Custom Builder",
-  contact: "Contact Form",
-};
+import { subscribeCustomers, SOURCE_LABEL, type CustomerRecord } from "../../../lib/analytics";
 
 function formatDate(ts: CustomerRecord["createdAt"]): string {
   if (!ts) return "—";
@@ -54,9 +46,13 @@ export default function CustomersTab() {
               <tr key={c.id}>
                 <td className="px-5 py-3 text-ink/85">{c.name}</td>
                 <td className="px-5 py-3 text-ink/70">
-                  <a href={`tel:${c.phone}`} className="hover:text-maroon transition-colors">
-                    {c.phone}
-                  </a>
+                  {c.phone ? (
+                    <a href={`tel:${c.phone}`} className="hover:text-maroon transition-colors">
+                      {c.phone}
+                    </a>
+                  ) : (
+                    <span className="text-ink/30">—</span>
+                  )}
                 </td>
                 <td className="px-5 py-3 text-ink/60">{SOURCE_LABEL[c.source] ?? c.source}</td>
                 <td className="px-5 py-3 text-ink/50 whitespace-nowrap">{formatDate(c.createdAt)}</td>

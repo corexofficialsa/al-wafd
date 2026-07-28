@@ -10,6 +10,13 @@ service cloud.firestore {
       allow read, update, delete: if request.auth != null;
     }
 
+    // Orders: created by any visitor when they click Enquire (full package
+    // details), quotation added later by the signed-in admin only.
+    match /orders/{doc} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
     // Visit/click counters: the public site increments these anonymously;
     // only the admin can read the totals.
     match /stats/{doc} {

@@ -72,6 +72,7 @@ export default function Packages() {
                       source: p.id as EnquirySource,
                       whatsappUrl: presetWhatsappUrl(p, lang),
                       detail: p.name.en,
+                      orderDetails: p.features.map((f) => ({ label: f.en })),
                     })
                   }
                   className={`text-center py-4 text-sm tracking-widest-lg uppercase font-sans transition-colors ${

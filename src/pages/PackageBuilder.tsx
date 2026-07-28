@@ -6,8 +6,10 @@ import Toggle from "../components/Toggle";
 import RoomSelect from "../components/RoomSelect";
 import QuantityStepper from "../components/QuantityStepper";
 import AirportAutocomplete from "../components/AirportAutocomplete";
+import TransportSelect from "../components/TransportSelect";
 import {
   customPackageWhatsappUrl,
+  customSelectionToOrderDetails,
   defaultSelection,
   type CustomSelection,
 } from "../lib/whatsapp";
@@ -21,10 +23,30 @@ function selectionCount(s: CustomSelection): number {
   if (s.airportPickup) n++;
   if (s.makkahRoom !== "None") n++;
   if (s.makkahZiyara) n++;
+  if (s.intercityTransport !== "None") n++;
   if (s.madeenaRoom !== "None") n++;
   if (s.madeenaZiyara) n++;
   if (s.airportDropoff) n++;
   return n;
+}
+
+/** A conditional AnimatePresence reveal without height/overflow-hidden, so
+ * dropdowns (like the airport autocomplete) inside can escape visually. */
+function FieldReveal({ show, children }: { show: boolean; children: React.ReactNode }) {
+  return (
+    <AnimatePresence initial={false}>
+      {show && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="pb-5">{children}</div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }
 
 export default function PackageBuilder() {
@@ -46,10 +68,15 @@ export default function PackageBuilder() {
         ? `${count} സേവന${count > 1 ? "ങ്ങൾ" : "ം"} തിരഞ്ഞെടുത്തു`
         : `${count} service${count > 1 ? "s" : ""} selected`;
 
-  const packagesLabel =
+  const individualsLabel =
     lang === "ml"
-      ? `${selection.quantity} ${selection.quantity > 1 ? "പാക്കേജുകൾ" : "പാക്കേജ്"}`
-      : `${selection.quantity} ${selection.quantity > 1 ? "packages" : "package"}`;
+      ? `${selection.individuals} ${selection.individuals > 1 ? "വ്യക്തികൾ" : "വ്യക്തി"}`
+      : `${selection.individuals} ${selection.individuals > 1 ? "individuals" : "individual"}`;
+
+  const nightsLabel =
+    lang === "ml"
+      ? `${selection.nights} ${selection.nights > 1 ? "രാത്രികൾ" : "രാത്രി"}`
+      : `${selection.nights} ${selection.nights > 1 ? "nights" : "night"}`;
 
   return (
     <div>
@@ -76,10 +103,17 @@ export default function PackageBuilder() {
           <Reveal className="md:col-span-2">
             <div className="border-b border-maroon/15 divide-y divide-maroon/10">
               <QuantityStepper
-                value={selection.quantity}
-                onChange={(v) => set("quantity", v)}
-                label={t({ en: "Number of Packages", ml: "പാക്കേജുകളുടെ എണ്ണം" })}
+                value={selection.individuals}
+                onChange={(v) => set("individuals", v)}
+                label={t({ en: "Number of Individuals", ml: "വ്യക്തികളുടെ എണ്ണം" })}
                 description={t({ en: "How many people is this for?", ml: "എത്ര പേർക്കാണ് ഇത്?" })}
+              />
+              <QuantityStepper
+                value={selection.nights}
+                onChange={(v) => set("nights", v)}
+                label={t({ en: "Number of Nights", ml: "രാത്രികളുടെ എണ്ണം" })}
+                description={t({ en: "How many nights do you need in total?", ml: "മൊത്തം എത്ര രാത്രി വേണം?" })}
+                max={60}
               />
               <Toggle
                 checked={selection.visa}
@@ -93,34 +127,23 @@ export default function PackageBuilder() {
                 label={t({ en: "Flight Ticket", ml: "ഫ്ലൈറ്റ് ടിക്കറ്റ്" })}
                 description={t({ en: "We book your flight there and back.", ml: "പോക്കും വരവും ഫ്ലൈറ്റ് ഞങ്ങൾ ബുക്ക് ചെയ്യും." })}
               />
-              <AnimatePresence initial={false}>
-                {selection.ticket && (
-                  // No height/overflow-hidden animation here on purpose: the
-                  // autocomplete dropdown below needs to visually escape this
-                  // block, which overflow-hidden would otherwise clip.
-                  <motion.div
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    <div className="grid grid-cols-2 gap-4 pb-5">
-                      <AirportAutocomplete
-                        value={selection.flightFrom}
-                        onChange={(v) => set("flightFrom", v)}
-                        label={t({ en: "From Airport", ml: "ഏത് എയർപോർട്ടിൽ നിന്ന്" })}
-                        placeholder={t({ en: "Search city or airport code", ml: "നഗരം അല്ലെങ്കിൽ കോഡ് തിരയൂ" })}
-                      />
-                      <AirportAutocomplete
-                        value={selection.flightTo}
-                        onChange={(v) => set("flightTo", v)}
-                        label={t({ en: "To Airport", ml: "ഏത് എയർപോർട്ടിലേക്ക്" })}
-                        placeholder={t({ en: "Search city or airport code", ml: "നഗരം അല്ലെങ്കിൽ കോഡ് തിരയൂ" })}
-                      />
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <FieldReveal show={selection.ticket}>
+                <div className="grid grid-cols-2 gap-4">
+                  <AirportAutocomplete
+                    value={selection.flightFrom}
+                    onChange={(v) => set("flightFrom", v)}
+                    label={t({ en: "From Airport", ml: "ഏത് എയർപോർട്ടിൽ നിന്ന്" })}
+                    placeholder={t({ en: "Search city or airport code", ml: "നഗരം അല്ലെങ്കിൽ കോഡ് തിരയൂ" })}
+                  />
+                  <AirportAutocomplete
+                    value={selection.flightTo}
+                    onChange={(v) => set("flightTo", v)}
+                    label={t({ en: "To Airport", ml: "ഏത് എയർപോർട്ടിലേക്ക്" })}
+                    placeholder={t({ en: "Search city or airport code", ml: "നഗരം അല്ലെങ്കിൽ കോഡ് തിരയൂ" })}
+                  />
+                </div>
+              </FieldReveal>
+
               <Toggle
                 checked={selection.airportPickup}
                 onChange={(v) => set("airportPickup", v)}
@@ -130,6 +153,15 @@ export default function PackageBuilder() {
                   ml: "എത്തുമ്പോൾ സ്വീകരിച്ച് നേരിട്ട് ഹോട്ടലിലേക്ക് കൊണ്ടുപോകും.",
                 })}
               />
+              <FieldReveal show={selection.airportPickup}>
+                <AirportAutocomplete
+                  value={selection.airportPickupLocation}
+                  onChange={(v) => set("airportPickupLocation", v)}
+                  label={t({ en: "Pickup Airport", ml: "പിക്കപ്പ് എയർപോർട്ട്" })}
+                  placeholder={t({ en: "Search city or airport code", ml: "നഗരം അല്ലെങ്കിൽ കോഡ് തിരയൂ" })}
+                />
+              </FieldReveal>
+
               <Toggle
                 checked={selection.airportDropoff}
                 onChange={(v) => set("airportDropoff", v)}
@@ -137,6 +169,24 @@ export default function PackageBuilder() {
                 description={t({
                   en: "Driven to the airport ahead of your departure.",
                   ml: "മടക്കയാത്രക്ക് മുമ്പ് എയർപോർട്ടിലേക്ക് കൊണ്ടുപോകും.",
+                })}
+              />
+              <FieldReveal show={selection.airportDropoff}>
+                <AirportAutocomplete
+                  value={selection.airportDropoffLocation}
+                  onChange={(v) => set("airportDropoffLocation", v)}
+                  label={t({ en: "Drop-off Airport", ml: "ഡ്രോപ്പ്-ഓഫ് എയർപോർട്ട്" })}
+                  placeholder={t({ en: "Search city or airport code", ml: "നഗരം അല്ലെങ്കിൽ കോഡ് തിരയൂ" })}
+                />
+              </FieldReveal>
+
+              <TransportSelect
+                value={selection.intercityTransport}
+                onChange={(v) => set("intercityTransport", v)}
+                label={t({ en: "Makkah ⇄ Madeenah Transport", ml: "മക്ക ⇄ മദീന യാത്ര" })}
+                description={t({
+                  en: "How would you like to travel between the two holy cities?",
+                  ml: "രണ്ട് പുണ്യ നഗരങ്ങൾക്കിടയിൽ എങ്ങനെ യാത്ര ചെയ്യണം?",
                 })}
               />
             </div>
@@ -192,6 +242,27 @@ export default function PackageBuilder() {
               />
             </div>
           </Reveal>
+
+          <Reveal delay={0.15} className="md:col-span-2">
+            <div className="pt-10">
+              <label className="block text-base md:text-lg font-serif font-medium text-maroon mb-1">
+                {t({ en: "Any Requirements?", ml: "എന്തെങ്കിലും പ്രത്യേക ആവശ്യങ്ങൾ?" })}
+              </label>
+              <p className="text-xs md:text-sm font-normal text-ink/45 mb-4">
+                {t({
+                  en: "Tell us anything else we should know — wheelchair access, dietary needs, room preferences, etc.",
+                  ml: "വീൽചെയർ ആവശ്യമുണ്ടോ, ഭക്ഷണ നിയന്ത്രണങ്ങൾ, റൂം മുൻഗണനകൾ പോലുള്ളവ ഉണ്ടെങ്കിൽ പറയൂ.",
+                })}
+              </p>
+              <textarea
+                value={selection.comments}
+                onChange={(e) => set("comments", e.target.value)}
+                rows={3}
+                placeholder={t({ en: "Optional — write any special requests here", ml: "ഐച്ഛികം — പ്രത്യേക ആവശ്യങ്ങൾ ഇവിടെ എഴുതൂ" })}
+                className="w-full bg-transparent border border-maroon/20 focus:border-gold text-ink px-4 py-3 text-sm outline-none transition-colors resize-none"
+              />
+            </div>
+          </Reveal>
         </div>
 
         {/* Sticky summary / CTA */}
@@ -204,7 +275,9 @@ export default function PackageBuilder() {
               <p className="text-[11px] tracking-widest-lg uppercase text-gold/80 mb-2">
                 {servicesLabel}
                 {" · "}
-                {packagesLabel}
+                {individualsLabel}
+                {" · "}
+                {nightsLabel}
               </p>
               <p className="font-serif font-medium text-xl md:text-2xl text-cream text-balance">
                 {t({ en: "Send your choices to our team.", ml: "നിങ്ങളുടെ തിരഞ്ഞെടുപ്പുകൾ ഞങ്ങളുടെ ടീമിന് അയക്കൂ." })}
@@ -212,7 +285,14 @@ export default function PackageBuilder() {
             </div>
             <button
               type="button"
-              onClick={() => requestEnquire({ source: "custom-builder", whatsappUrl })}
+              onClick={() =>
+                requestEnquire({
+                  source: "custom-builder",
+                  whatsappUrl,
+                  quantity: selection.individuals,
+                  orderDetails: customSelectionToOrderDetails(selection),
+                })
+              }
               className="shrink-0 px-10 py-4 bg-gold text-maroon-dark text-sm tracking-widest-lg uppercase font-sans font-medium hover:bg-gold-light transition-colors whitespace-nowrap"
             >
               {t({ en: "Enquire Now", ml: "അന്വേഷിക്കൂ" })}

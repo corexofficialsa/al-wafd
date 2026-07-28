@@ -4,13 +4,17 @@ import { useAdminAuth } from "../../lib/adminAuth";
 import HomeTab from "./tabs/HomeTab";
 import FinanceTab from "./tabs/FinanceTab";
 import CustomersTab from "./tabs/CustomersTab";
+import OrdersTab from "./tabs/OrdersTab";
+import InvoiceTab from "./tabs/InvoiceTab";
 
-type Tab = "home" | "finance" | "customers";
+type Tab = "home" | "finance" | "customers" | "orders" | "invoice";
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "home", label: "Home" },
   { id: "finance", label: "Finance" },
   { id: "customers", label: "Customers" },
+  { id: "orders", label: "Orders" },
+  { id: "invoice", label: "Invoice" },
 ];
 
 export default function AdminDashboard() {
@@ -72,6 +76,8 @@ export default function AdminDashboard() {
         {tab === "home" && <HomeTab />}
         {tab === "finance" && <FinanceTab />}
         {tab === "customers" && <CustomersTab />}
+        {tab === "orders" && <OrdersTab />}
+        {tab === "invoice" && <InvoiceTab />}
       </main>
     </div>
   );

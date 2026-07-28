@@ -1,14 +1,18 @@
 import { createContext, useContext, useRef, useState, type ReactNode } from "react";
 import { saveCustomer, trackEnquireClick, type EnquirySource } from "./analytics";
+import { createOrder, type OrderDetail } from "./orders";
 import { useT } from "./i18n";
 
 const NAME_KEY = "wafd_customer_name";
-const PHONE_KEY = "wafd_customer_phone";
 
 export interface EnquireRequest {
   source: EnquirySource;
   whatsappUrl: string;
+  /** Short label shown in the Customers tab (e.g. the preset name). */
   detail?: string;
+  /** Structured line items for the full order record admin sees (e.g. "Visa Processing", "Makkah Accommodation — 4 Star"). */
+  orderDetails?: OrderDetail[];
+  quantity?: number;
 }
 
 interface EnquireFlowValue {
@@ -17,24 +21,28 @@ interface EnquireFlowValue {
 
 const EnquireFlowContext = createContext<EnquireFlowValue | null>(null);
 
-function proceed(name: string, phone: string, req: EnquireRequest) {
-  void saveCustomer({ name, phone, source: req.source, detail: req.detail });
+function proceed(name: string, req: EnquireRequest) {
+  void saveCustomer({ name, source: req.source, detail: req.detail });
   void trackEnquireClick();
+  void createOrder({
+    customerName: name,
+    source: req.source,
+    quantity: req.quantity ?? 1,
+    details: req.orderDetails ?? [],
+  });
   window.open(req.whatsappUrl, "_blank", "noopener,noreferrer");
 }
 
 export function EnquireFlowProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
   const pendingRef = useRef<EnquireRequest | null>(null);
   const t = useT();
 
   function requestEnquire(req: EnquireRequest) {
     const cachedName = window.localStorage.getItem(NAME_KEY);
-    const cachedPhone = window.localStorage.getItem(PHONE_KEY);
-    if (cachedName && cachedPhone) {
-      proceed(cachedName, cachedPhone, req);
+    if (cachedName) {
+      proceed(cachedName, req);
       return;
     }
     pendingRef.current = req;
@@ -44,14 +52,11 @@ export function EnquireFlowProvider({ children }: { children: ReactNode }) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const trimmedName = name.trim();
-    const trimmedPhone = phone.trim();
-    if (!trimmedName || !trimmedPhone || !pendingRef.current) return;
+    if (!trimmedName || !pendingRef.current) return;
     window.localStorage.setItem(NAME_KEY, trimmedName);
-    window.localStorage.setItem(PHONE_KEY, trimmedPhone);
-    proceed(trimmedName, trimmedPhone, pendingRef.current);
+    proceed(trimmedName, pendingRef.current);
     setOpen(false);
     setName("");
-    setPhone("");
     pendingRef.current = null;
   }
 
@@ -79,7 +84,7 @@ export function EnquireFlowProvider({ children }: { children: ReactNode }) {
               {t({ en: "Before You Go", ml: "തുടരുന്നതിന് മുമ്പ്" })}
             </p>
             <h3 className="text-2xl font-serif font-medium text-maroon mb-2">
-              {t({ en: "Tell Us Who's Asking", ml: "നിങ്ങളുടെ വിവരങ്ങൾ നൽകൂ" })}
+              {t({ en: "Tell Us Who's Asking", ml: "നിങ്ങളുടെ പേര് നൽകൂ" })}
             </h3>
             <p className="text-sm text-ink/55 font-normal mb-6 leading-relaxed">
               {t({
@@ -100,19 +105,6 @@ export function EnquireFlowProvider({ children }: { children: ReactNode }) {
                   autoFocus
                   className="w-full bg-transparent border-b border-maroon/25 focus:border-gold outline-none py-2.5 text-lg font-normal transition-colors"
                   placeholder={t({ en: "Your name", ml: "നിങ്ങളുടെ പേര്" })}
-                />
-              </div>
-              <div>
-                <label className="block text-xs tracking-widest-lg uppercase text-maroon/70 mb-2">
-                  {t({ en: "Phone / WhatsApp", ml: "ഫോൺ / വാട്സാപ്പ്" })}
-                </label>
-                <input
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  type="tel"
-                  required
-                  className="w-full bg-transparent border-b border-maroon/25 focus:border-gold outline-none py-2.5 text-lg font-normal transition-colors"
-                  placeholder="+966 5X XXX XXXX"
                 />
               </div>
               <button
