@@ -13,6 +13,10 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 
+function byCreatedAtDesc(a: Review, b: Review): number {
+  return (b.createdAt?.toMillis() ?? 0) - (a.createdAt?.toMillis() ?? 0);
+}
+
 export interface Review {
   id: string;
   name: string;
@@ -43,24 +47,28 @@ export async function createReview(input: CreateReviewInput): Promise<void> {
   }
 }
 
-/** Homepage feed — only reviews the admin has approved. */
+/**
+ * Homepage feed — only reviews the admin has approved. Sorted client-side
+ * rather than with `orderBy` in the query, since combining that with the
+ * `approved` equality filter would require a manually-created Firestore
+ * composite index.
+ */
 export function subscribeApprovedReviews(cb: (reviews: Review[]) => void) {
   if (!db) return () => {};
-  const q = query(collection(db, "reviews"), where("approved", "==", true), orderBy("createdAt", "desc"));
+  const q = query(collection(db, "reviews"), where("approved", "==", true));
   return onSnapshot(q, (snap) => {
-    cb(
-      snap.docs.map((d) => {
-        const data = d.data();
-        return {
-          id: d.id,
-          name: (data.name as string) ?? "",
-          rating: (data.rating as number) ?? 5,
-          text: (data.text as string) ?? "",
-          approved: (data.approved as boolean) ?? false,
-          createdAt: (data.createdAt as Timestamp) ?? null,
-        };
-      })
-    );
+    const reviews = snap.docs.map((d) => {
+      const data = d.data();
+      return {
+        id: d.id,
+        name: (data.name as string) ?? "",
+        rating: (data.rating as number) ?? 5,
+        text: (data.text as string) ?? "",
+        approved: (data.approved as boolean) ?? false,
+        createdAt: (data.createdAt as Timestamp) ?? null,
+      };
+    });
+    cb(reviews.sort(byCreatedAtDesc));
   });
 }
 
