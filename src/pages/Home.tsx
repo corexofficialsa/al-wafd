@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import ParallaxSurface from "../components/ParallaxSurface";
 import Reveal from "../components/Reveal";
 import OrnamentDivider from "../components/OrnamentDivider";
+import Testimonials from "../components/Testimonials";
 import { PRESET_PACKAGES } from "../lib/presets";
 import { useT, type Bi } from "../lib/i18n";
 
@@ -212,6 +213,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <Testimonials />
 
       {/* Closing CTA */}
       <ParallaxSurface image="/images/cta-madinah.jpg" height="70svh" surfaceClassName="surface-haram">

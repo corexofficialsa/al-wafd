@@ -24,6 +24,15 @@ service cloud.firestore {
       allow write: if true;
     }
 
+    // Reviews: any visitor can submit one, but it only shows on the
+    // homepage once the signed-in admin approves it. Admin can also see
+    // (and moderate) pending ones.
+    match /reviews/{doc} {
+      allow create: if true;
+      allow read: if resource.data.approved == true || request.auth != null;
+      allow update, delete: if request.auth != null;
+    }
+
     // Finance is admin-only end to end.
     match /expenses/{doc} {
       allow read, write: if request.auth != null;

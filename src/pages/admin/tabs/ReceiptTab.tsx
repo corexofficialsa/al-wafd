@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { SOURCE_LABEL } from "../../../lib/analytics";
 import { subscribeOrders, saveReceipt, type Order } from "../../../lib/orders";
 import { generateReceiptPdf, downloadBlob } from "../../../lib/quotationPdf";
+import { addIncome } from "../../../lib/finance";
 
 function formatDate(ts: Order["createdAt"]): string {
   if (!ts) return "—";
@@ -12,6 +13,10 @@ function formatDate(ts: Order["createdAt"]): string {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+function todayIso(): string {
+  return new Date().toISOString().slice(0, 10);
 }
 
 function receiptNumber(orderId: string): string {
@@ -28,6 +33,9 @@ export default function ReceiptTab() {
 
   async function handleGenerate(order: Order) {
     if (!order.quotation) return;
+    // Only count toward Finance the first time this order is receipted —
+    // regenerating an existing receipt shouldn't double the income entry.
+    const isFirstReceipt = !order.receipt;
     setGeneratingId(order.id);
     try {
       const number = receiptNumber(order.id);
@@ -41,6 +49,9 @@ export default function ReceiptTab() {
       });
       downloadBlob(blob, `${number}-${order.customerName.replace(/\s+/g, "-")}.pdf`);
       await saveReceipt(order.id, number);
+      if (isFirstReceipt && order.quotation.total > 0) {
+        await addIncome(order.quotation.total, `${number} — ${order.customerName}`, todayIso());
+      }
     } finally {
       setGeneratingId(null);
     }
