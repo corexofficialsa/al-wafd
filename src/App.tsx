@@ -9,6 +9,7 @@ import About from "./pages/About";
 import Packages from "./pages/Packages";
 import PackageBuilder from "./pages/PackageBuilder";
 import Contact from "./pages/Contact";
+import WriteReview from "./pages/WriteReview";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 
@@ -30,6 +31,7 @@ function AnimatedRoutes() {
         <Route path="/packages" element={<Packages />} />
         <Route path="/build" element={<PackageBuilder />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/review" element={<WriteReview />} />
       </Routes>
     </AnimatePresence>
   );
